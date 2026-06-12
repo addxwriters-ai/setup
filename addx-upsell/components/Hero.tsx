@@ -5,7 +5,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ScrollVideo from "./ScrollVideo";
 
-const HEADLINE = ["Your Product Videos", "Are Premium.", "Why Is Your", "Website Static?"];
+const HEADLINE: Array<Array<string | { serif: string }>> = [
+  ["Your product videos"],
+  ["are ", { serif: "premium" }, "."],
+  ["Why is your"],
+  ["website ", { serif: "static" }, "?"],
+];
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -56,10 +61,18 @@ export default function Hero() {
           Highly Animated UX/UI Web Design
         </p>
 
-        <h1 className="font-display text-[clamp(2.6rem,7.2vw,6.5rem)] font-bold uppercase leading-[0.95] tracking-tightest">
+        <h1 className="font-display text-[clamp(2.6rem,7vw,6.2rem)] font-semibold leading-[1.02] tracking-tightest">
           {HEADLINE.map((line, i) => (
-            <span key={line} className="hero-line block overflow-hidden">
-              <span className={`inline-block ${i >= 2 ? "text-accent" : ""}`}>{line}</span>
+            <span key={i} className="hero-line block overflow-hidden">
+              <span className="inline-block">
+                {line.map((part, j) =>
+                  typeof part === "string" ? (
+                    <span key={j}>{part}</span>
+                  ) : (
+                    <em key={j} className="serif-accent">{part.serif}</em>
+                  )
+                )}
+              </span>
             </span>
           ))}
         </h1>

@@ -18,8 +18,8 @@ export default function AddxHero(props: any) {
         text,
         muted,
         eyebrow,
-        headlineWhite,
-        headlineAccent,
+        headline,
+        serifFont,
         sub,
         scrollHint,
         displayFont,
@@ -36,23 +36,43 @@ export default function AddxHero(props: any) {
     const copyOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
     const gridY = useTransform(scrollYProgress, [0, 1], [0, 320])
 
-    const lines = (white: boolean) =>
-        (white ? headlineWhite : headlineAccent).split("\n").map((line: string, i: number) => (
-            <span key={i} style={{ display: "block", overflow: "hidden" }}>
-                <motion.span
-                    initial={{ y: "115%", rotate: 3 }}
-                    animate={{ y: "0%", rotate: 0 }}
-                    transition={{
-                        duration: 1.1,
-                        delay: 0.2 + (white ? i : i + 2) * 0.1,
-                        ease: [0.22, 1, 0.36, 1],
+    // Words wrapped in *asterisks* render in the italic serif accent style.
+    const renderRich = (line: string) =>
+        line.split(/(\*[^*]+\*)/g).map((seg: string, j: number) =>
+            seg.startsWith("*") && seg.endsWith("*") ? (
+                <em
+                    key={j}
+                    style={{
+                        fontFamily: serifFont,
+                        fontStyle: "italic",
+                        fontWeight: 400,
+                        color: accent,
+                        letterSpacing: "-0.01em",
                     }}
-                    style={{ display: "inline-block", color: white ? text : accent }}
                 >
-                    {line}
-                </motion.span>
-            </span>
-        ))
+                    {seg.slice(1, -1)}
+                </em>
+            ) : (
+                <span key={j}>{seg}</span>
+            )
+        )
+
+    const lines = headline.split("\n").map((line: string, i: number) => (
+        <span key={i} style={{ display: "block", overflow: "hidden" }}>
+            <motion.span
+                initial={{ y: "115%", rotate: 3 }}
+                animate={{ y: "0%", rotate: 0 }}
+                transition={{
+                    duration: 1.1,
+                    delay: 0.2 + i * 0.1,
+                    ease: [0.22, 1, 0.36, 1],
+                }}
+                style={{ display: "inline-block", color: text }}
+            >
+                {renderRich(line)}
+            </motion.span>
+        </span>
+    ))
 
     return (
         <div
@@ -87,7 +107,7 @@ export default function AddxHero(props: any) {
                 style={{
                     position: "absolute",
                     inset: 0,
-                    background: `radial-gradient(60% 50% at 70% 20%, ${accent}12, transparent 70%), linear-gradient(to bottom, ${background}99, transparent 40%, ${background})`,
+                    background: `radial-gradient(70% 60% at 50% 35%, rgba(20,80,200,0.35), transparent 70%), radial-gradient(40% 40% at 75% 15%, ${accent}1F, transparent 70%), linear-gradient(to bottom, ${background}99, transparent 40%, ${background})`,
                 }}
             />
 
@@ -126,15 +146,13 @@ export default function AddxHero(props: any) {
                     style={{
                         margin: 0,
                         fontFamily: displayFont,
-                        fontWeight: 700,
-                        textTransform: "uppercase",
-                        fontSize: "clamp(2.6rem, 7.2vw, 6.5rem)",
-                        lineHeight: 0.95,
-                        letterSpacing: "-0.045em",
+                        fontWeight: 600,
+                        fontSize: "clamp(2.6rem, 7vw, 6.2rem)",
+                        lineHeight: 1.02,
+                        letterSpacing: "-0.03em",
                     }}
                 >
-                    {lines(true)}
-                    {lines(false)}
+                    {lines}
                 </h1>
 
                 <motion.p
@@ -172,17 +190,17 @@ export default function AddxHero(props: any) {
 }
 
 AddxHero.defaultProps = {
-    background: "#050505",
-    accent: "#CCFF00",
-    text: "#F4F4F2",
-    muted: "#8B8B88",
+    background: "#02060C",
+    accent: "#4FC4F8",
+    text: "#FFFFFF",
+    muted: "#98A2B3",
     eyebrow: "Highly Animated UX/UI Web Design",
-    headlineWhite: "Your Product Videos\nAre Premium.",
-    headlineAccent: "Why Is Your\nWebsite Static?",
+    headline: "Your product videos\nare *premium*.\nWhy is your\nwebsite *static*?",
     sub: "ADDX Studio brings your interface to life. We build highly animated, immersive web experiences with the exact same motion choreography, cinematic pacing, and fluid transitions as our launch videos.",
     scrollHint: "Scroll — the demo has already started",
-    displayFont: "Space Grotesk, sans-serif",
+    displayFont: "Inter, sans-serif",
     bodyFont: "Inter, sans-serif",
+    serifFont: "Instrument Serif, Georgia, serif",
 }
 
 addPropertyControls(AddxHero, {
@@ -191,10 +209,15 @@ addPropertyControls(AddxHero, {
     text: { type: ControlType.Color, title: "Text" },
     muted: { type: ControlType.Color, title: "Muted" },
     eyebrow: { type: ControlType.String, title: "Eyebrow" },
-    headlineWhite: { type: ControlType.String, title: "Headline A", displayTextArea: true },
-    headlineAccent: { type: ControlType.String, title: "Headline B", displayTextArea: true },
+    headline: {
+        type: ControlType.String,
+        title: "Headline",
+        displayTextArea: true,
+        description: "Wrap words in *asterisks* for the italic serif accent",
+    },
     sub: { type: ControlType.String, title: "Subheadline", displayTextArea: true },
     scrollHint: { type: ControlType.String, title: "Scroll hint" },
     displayFont: { type: ControlType.String, title: "Display font" },
     bodyFont: { type: ControlType.String, title: "Body font" },
+    serifFont: { type: ControlType.String, title: "Serif accent font" },
 })

@@ -97,9 +97,9 @@ export default function Packages() {
           <span className="inline-block h-px w-12 bg-accent" aria-hidden />
           The Packages
         </p>
-        <h2 className="pkg-heading font-display text-[clamp(2.2rem,5.5vw,4.8rem)] font-bold uppercase leading-none tracking-tightest">
+        <h2 className="pkg-heading font-display text-[clamp(2.2rem,5.5vw,4.6rem)] font-semibold leading-[1.05] tracking-tightest">
           <span className="block overflow-hidden"><span className="block">Two ways</span></span>
-          <span className="block overflow-hidden"><span className="block">to go <span className="text-accent">kinetic.</span></span></span>
+          <span className="block overflow-hidden"><span className="block">to go <em className="serif-accent">kinetic</em>.</span></span>
         </h2>
 
         <div className="mt-16 grid gap-6 lg:grid-cols-2">
@@ -110,12 +110,12 @@ export default function Packages() {
               onPointerLeave={onLeave}
               className={`tier-card group relative flex flex-col bg-panel p-9 will-change-transform ${
                 tier.flagship
-                  ? "border border-accent/60 shadow-[0_0_80px_-20px_rgba(204,255,0,0.25)]"
+                  ? "border border-accent/60 shadow-[0_0_80px_-20px_rgba(79,196,248,0.35)]"
                   : "hairline"
               }`}
             >
               {tier.flagship && (
-                <span className="absolute -top-3 right-8 bg-accent px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-black">
+                <span className="absolute -top-3 right-8 rounded-md bg-cta px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-white">
                   High-Ticket · Flagship
                 </span>
               )}
@@ -151,8 +151,8 @@ export default function Packages() {
 
               <a
                 href="https://addxstudio.com"
-                className={`mt-10 block py-4 text-center font-display text-sm font-bold uppercase tracking-wide transition-transform duration-300 group-hover:scale-[1.02] ${
-                  tier.flagship ? "bg-accent text-black" : "hairline text-ink hover:bg-white/5"
+                className={`mt-10 block rounded-[10px] py-4 text-center font-display text-sm font-semibold transition-transform duration-300 group-hover:scale-[1.02] ${
+                  tier.flagship ? "bg-cta text-white" : "hairline text-ink hover:bg-white/5"
                 }`}
               >
                 {tier.cta}

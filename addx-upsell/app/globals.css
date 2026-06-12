@@ -1,15 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-void: #050505;
-  --color-panel: #0b0b0c;
-  --color-ink: #f4f4f2;
-  --color-muted: #8b8b88;
-  --color-accent: #ccff00;
+  --color-void: #02060c;
+  --color-panel: #0b0f16;
+  --color-ink: #ffffff;
+  --color-muted: #98a2b3;
+  --color-accent: #4fc4f8;
+  --color-cta: #2e7ef7;
   --color-edge: rgba(255, 255, 255, 0.08);
-  --font-display: "Space Grotesk Variable", "Space Grotesk", sans-serif;
+  --font-display: "Inter Variable", "Inter", sans-serif;
   --font-body: "Inter Variable", "Inter", sans-serif;
-  --tracking-tightest: -0.045em;
+  --tracking-tightest: -0.03em;
 }
 
 html {
@@ -68,14 +69,23 @@ body {
   80%, 100% { transform: scale(3); opacity: 0; }
 }
 
+/* --- ADDX signature italic-serif accent inside sans headlines --- */
+.serif-accent {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-accent);
+  letter-spacing: -0.01em;
+}
+
 /* --- Higgsfield placeholder loop (CSS fallback until renders are delivered) --- */
 .hf-fallback {
   position: absolute;
   inset: 0;
   overflow: hidden;
   background:
-    radial-gradient(60% 50% at 70% 20%, rgba(204, 255, 0, 0.07), transparent 70%),
-    radial-gradient(50% 60% at 20% 80%, rgba(120, 90, 255, 0.1), transparent 70%),
+    radial-gradient(70% 60% at 50% 35%, rgba(20, 80, 200, 0.35), transparent 70%),
+    radial-gradient(40% 40% at 75% 15%, rgba(79, 196, 248, 0.12), transparent 70%),
     var(--color-void);
 }
 .hf-fallback .hf-grid {

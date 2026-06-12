@@ -25,6 +25,7 @@ export default function AddxEcosystemLeak(props: any) {
         edge,
         displayFont,
         bodyFont,
+        serifFont,
         copyA,
         copyB,
         scrollLength,
@@ -113,28 +114,30 @@ export default function AddxEcosystemLeak(props: any) {
                         style={{
                             margin: 0,
                             fontFamily: displayFont,
-                            fontWeight: 700,
-                            textTransform: "uppercase",
-                            fontSize: "clamp(2.2rem, 5.5vw, 4.8rem)",
-                            lineHeight: 1,
-                            letterSpacing: "-0.045em",
+                            fontWeight: 600,
+                            fontSize: "clamp(2.2rem, 5.5vw, 4.6rem)",
+                            lineHeight: 1.05,
+                            letterSpacing: "-0.03em",
                         }}
                     >
                         <span style={{ display: "block", overflow: "hidden" }}>
                             <motion.span style={{ display: "block", y: headY }}>
-                                The Ecosystem
+                                The ecosystem
                             </motion.span>
                         </span>
                         <span style={{ display: "block", overflow: "hidden" }}>
-                            <motion.span
-                                style={{
-                                    display: "block",
-                                    y: headY,
-                                    color: "transparent",
-                                    WebkitTextStroke: `1.5px ${text}`,
-                                }}
-                            >
-                                Leak.
+                            <motion.span style={{ display: "block", y: headY }}>
+                                <em
+                                    style={{
+                                        fontFamily: serifFont,
+                                        fontStyle: "italic",
+                                        fontWeight: 400,
+                                        color: accent,
+                                    }}
+                                >
+                                    leak
+                                </em>
+                                .
                             </motion.span>
                         </span>
                     </h2>
@@ -154,7 +157,7 @@ export default function AddxEcosystemLeak(props: any) {
                                 style={{
                                     position: "absolute",
                                     inset: 0,
-                                    background: `radial-gradient(70% 60% at 30% 20%, ${accent}24, transparent 70%), radial-gradient(60% 70% at 80% 85%, #785AFF2E, transparent 70%)`,
+                                    background: `radial-gradient(70% 60% at 30% 20%, ${accent}24, transparent 70%), radial-gradient(60% 70% at 80% 85%, #2E7EF738, transparent 70%)`,
                                 }}
                             />
                             <span style={{ ...monoLabel, position: "relative" }}>ADDX Launch Film</span>
@@ -292,15 +295,16 @@ export default function AddxEcosystemLeak(props: any) {
 }
 
 AddxEcosystemLeak.defaultProps = {
-    background: "#050505",
-    panel: "#0B0B0C",
-    accent: "#CCFF00",
+    background: "#02060C",
+    panel: "#0B0F16",
+    accent: "#4FC4F8",
     danger: "#FF3B3B",
-    text: "#F4F4F2",
-    muted: "#8B8B88",
+    text: "#FFFFFF",
+    muted: "#98A2B3",
     edge: "rgba(255,255,255,0.08)",
-    displayFont: "Space Grotesk, sans-serif",
+    displayFont: "Inter, sans-serif",
     bodyFont: "Inter, sans-serif",
+    serifFont: "Instrument Serif, Georgia, serif",
     copyA: "A user clicks a high-converting ADDX video — pacing, choreography, intent all engineered — and lands on a flat, generic, uninspired web template. The conversion magic breaks on impact. That is the ecosystem leak.",
     copyB: "We seal it by extending the motion experience directly onto the landing page: the same easing curves, the same cinematic pacing, the same brand physics — from first frame of the ad to final click of the funnel.",
     scrollLength: 3,
@@ -316,6 +320,7 @@ addPropertyControls(AddxEcosystemLeak, {
     edge: { type: ControlType.Color, title: "Border" },
     displayFont: { type: ControlType.String, title: "Display font" },
     bodyFont: { type: ControlType.String, title: "Body font" },
+    serifFont: { type: ControlType.String, title: "Serif accent font" },
     copyA: { type: ControlType.String, title: "Leak copy", displayTextArea: true },
     copyB: { type: ControlType.String, title: "Fix copy", displayTextArea: true },
     scrollLength: {

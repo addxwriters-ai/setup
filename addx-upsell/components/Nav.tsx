@@ -38,7 +38,7 @@ export default function Nav() {
 
         <a
           href="#packages"
-          className="hairline bg-accent px-5 py-2.5 font-display text-sm font-bold uppercase tracking-wide text-black transition-transform duration-300 hover:scale-[1.04]"
+          className="rounded-[10px] bg-cta px-5 py-2.5 font-display text-sm font-semibold text-white transition-transform duration-300 hover:scale-[1.04]"
         >
           Book a Build
         </a>

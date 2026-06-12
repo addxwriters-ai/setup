@@ -50,8 +50,8 @@ export default function AddxStatusBadge(props: any) {
 }
 
 AddxStatusBadge.defaultProps = {
-    accent: "#CCFF00",
-    muted: "#8B8B88",
+    accent: "#4FC4F8",
+    muted: "#98A2B3",
     label: "System Status: Active",
 }
 

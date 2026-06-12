@@ -59,8 +59,10 @@ export default function AddxPackages(props: any) {
         text,
         muted,
         edge,
+        cta,
         displayFont,
         bodyFont,
+        serifFont,
         headingA,
         headingB,
         tier1Name,
@@ -126,11 +128,10 @@ export default function AddxPackages(props: any) {
                     style={{
                         margin: 0,
                         fontFamily: displayFont,
-                        fontWeight: 700,
-                        textTransform: "uppercase",
-                        fontSize: "clamp(2.2rem, 5.5vw, 4.8rem)",
-                        lineHeight: 1,
-                        letterSpacing: "-0.045em",
+                        fontWeight: 600,
+                        fontSize: "clamp(2.2rem, 5.5vw, 4.6rem)",
+                        lineHeight: 1.05,
+                        letterSpacing: "-0.03em",
                     }}
                 >
                     {[headingA, headingB].map((line, i) => (
@@ -140,9 +141,25 @@ export default function AddxPackages(props: any) {
                                 whileInView={{ y: "0%" }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.9, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                                style={{ display: "block", color: i === 1 ? accent : text }}
+                                style={{ display: "block", color: text }}
                             >
-                                {line}
+                                {line.split(/(\*[^*]+\*)/g).map((seg: string, j: number) =>
+                                    seg.startsWith("*") && seg.endsWith("*") ? (
+                                        <em
+                                            key={j}
+                                            style={{
+                                                fontFamily: serifFont,
+                                                fontStyle: "italic",
+                                                fontWeight: 400,
+                                                color: accent,
+                                            }}
+                                        >
+                                            {seg.slice(1, -1)}
+                                        </em>
+                                    ) : (
+                                        <span key={j}>{seg}</span>
+                                    )
+                                )}
                             </motion.span>
                         </span>
                     ))}
@@ -164,8 +181,9 @@ export default function AddxPackages(props: any) {
                                         position: "absolute",
                                         top: -12,
                                         right: 32,
-                                        background: accent,
-                                        color: "#000",
+                                        background: cta,
+                                        color: "#FFF",
+                                        borderRadius: 6,
                                         padding: "4px 12px",
                                         fontSize: 10,
                                         fontWeight: 700,
@@ -238,8 +256,9 @@ export default function AddxPackages(props: any) {
                                     textTransform: "uppercase",
                                     letterSpacing: "0.05em",
                                     textDecoration: "none",
-                                    background: tier.flagship ? accent : "transparent",
-                                    color: tier.flagship ? "#000" : text,
+                                    borderRadius: 10,
+                                    background: tier.flagship ? cta : "transparent",
+                                    color: tier.flagship ? "#FFF" : text,
                                     border: tier.flagship ? "none" : `1px solid ${edge}`,
                                 }}
                             >
@@ -254,16 +273,18 @@ export default function AddxPackages(props: any) {
 }
 
 AddxPackages.defaultProps = {
-    background: "#050505",
-    panel: "#0B0B0C",
-    accent: "#CCFF00",
-    text: "#F4F4F2",
-    muted: "#8B8B88",
+    background: "#02060C",
+    panel: "#0B0F16",
+    accent: "#4FC4F8",
+    cta: "#2E7EF7",
+    text: "#FFFFFF",
+    muted: "#98A2B3",
     edge: "rgba(255,255,255,0.08)",
-    displayFont: "Space Grotesk, sans-serif",
+    displayFont: "Inter, sans-serif",
     bodyFont: "Inter, sans-serif",
+    serifFont: "Instrument Serif, Georgia, serif",
     headingA: "Two ways",
-    headingB: "to go kinetic.",
+    headingB: "to go *kinetic*.",
     tier1Name: "STARTER",
     tier1Label: "AI + Human Polished",
     tier1Price: "$1,500",
@@ -303,8 +324,10 @@ addPropertyControls(AddxPackages, {
     text: { type: ControlType.Color, title: "Text" },
     muted: { type: ControlType.Color, title: "Muted" },
     edge: { type: ControlType.Color, title: "Border" },
+    cta: { type: ControlType.Color, title: "CTA button" },
     displayFont: { type: ControlType.String, title: "Display font" },
     bodyFont: { type: ControlType.String, title: "Body font" },
+    serifFont: { type: ControlType.String, title: "Serif accent font" },
     headingA: { type: ControlType.String, title: "Heading line 1" },
     headingB: { type: ControlType.String, title: "Heading line 2" },
     tier1Name: { type: ControlType.String, title: "T1 name" },

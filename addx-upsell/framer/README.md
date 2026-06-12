@@ -34,9 +34,11 @@ Every component exposes the same token set in the properties panel:
 - **Display font / Body font** — set these to the exact font names your Framer
   project already uses (Framer serves them; the components just reference the family)
 
-Select all three section components → set the tokens once → done. Current defaults
-are a placeholder palette (midnight `#050505`, volt `#CCFF00`); replace with the
-site's real tokens.
+Defaults are already matched to the live addxstudio.com theme: near-black base
+`#02060C` with deep blue glow, cyan accent `#4FC4F8`, azure CTA `#2E7EF7`, white
+sans headlines in sentence case with **italic serif accent words** (wrap a word in
+`*asterisks*` in any headline control to style it). Set the serif accent font to
+the serif your Framer project uses (defaults to Instrument Serif).
 
 ## Higgsfield loops
 

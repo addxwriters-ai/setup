@@ -41,8 +41,8 @@ export default function EcosystemLeak() {
         .to(".leak-label", { opacity: 0, duration: 0.3 }, "broken")
         .to(".card-site .site-flat", { opacity: 0, duration: 0.5 }, "broken")
         .to(".card-site .site-addx", { opacity: 1, duration: 0.5 }, "broken")
-        .to(".card-site", { borderColor: "rgba(204,255,0,0.5)", duration: 0.5 }, "broken")
-        .to(".signal-path", { strokeDashoffset: 0, stroke: "#ccff00", duration: 0.8, ease: "none" }, "broken")
+        .to(".card-site", { borderColor: "rgba(79,196,248,0.5)", duration: 0.5 }, "broken")
+        .to(".signal-path", { strokeDashoffset: 0, stroke: "#4fc4f8", duration: 0.8, ease: "none" }, "broken")
         .to(".leak-copy-a", { opacity: 0.25, duration: 0.4 }, "broken")
         .to(".leak-copy-b", { opacity: 1, y: 0, duration: 0.5 }, "broken+=0.3");
     }, ref);
@@ -57,15 +57,15 @@ export default function EcosystemLeak() {
           The Continuity Principle
         </p>
 
-        <h2 className="leak-heading font-display text-[clamp(2.2rem,5.5vw,4.8rem)] font-bold uppercase leading-none tracking-tightest">
-          <span className="block overflow-hidden"><span className="block">The Ecosystem</span></span>
-          <span className="block overflow-hidden"><span className="block text-outline">Leak.</span></span>
+        <h2 className="leak-heading font-display text-[clamp(2.2rem,5.5vw,4.6rem)] font-semibold leading-[1.05] tracking-tightest">
+          <span className="block overflow-hidden"><span className="block">The ecosystem</span></span>
+          <span className="block overflow-hidden"><span className="block"><em className="serif-accent">leak</em>.</span></span>
         </h2>
 
         {/* diagram */}
         <div className="relative mt-16 grid grid-cols-[1fr_minmax(80px,220px)_1fr] items-center gap-0">
           <div className="card-video hairline relative aspect-[4/3] overflow-hidden bg-panel p-5">
-            <div className="absolute inset-0 bg-[radial-gradient(70%_60%_at_30%_20%,rgba(204,255,0,0.14),transparent_70%),radial-gradient(60%_70%_at_80%_85%,rgba(120,90,255,0.18),transparent_70%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(70%_60%_at_30%_20%,rgba(79,196,248,0.16),transparent_70%),radial-gradient(60%_70%_at_80%_85%,rgba(46,126,247,0.22),transparent_70%)]" />
             <span className="relative font-mono text-[10px] uppercase tracking-[0.25em] text-muted">ADDX Launch Film</span>
             <span className="absolute bottom-5 left-5 font-display text-xl font-bold">Premium motion.<br />Click-through earned.</span>
             <span className="absolute right-4 top-4 flex items-center gap-2 font-mono text-[10px] text-accent">
@@ -78,7 +78,7 @@ export default function EcosystemLeak() {
               className="signal-path"
               d="M0 30 H220"
               fill="none"
-              stroke="#ccff00"
+              stroke="#4fc4f8"
               strokeWidth="2"
               strokeDasharray="600"
               strokeDashoffset="600"
@@ -96,7 +96,7 @@ export default function EcosystemLeak() {
               </span>
             </div>
             <div className="site-addx absolute inset-0 p-5 opacity-0">
-              <div className="absolute inset-0 bg-[radial-gradient(70%_60%_at_70%_30%,rgba(204,255,0,0.14),transparent_70%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(70%_60%_at_70%_30%,rgba(79,196,248,0.16),transparent_70%)]" />
               <span className="relative font-mono text-[10px] uppercase tracking-[0.25em] text-accent">ADDX Build</span>
               <span className="absolute bottom-5 left-5 font-display text-xl font-bold">
                 The motion never stops.<br />Neither does the funnel.
