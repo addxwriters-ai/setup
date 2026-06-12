@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KINETIC® — Motion Driven Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a;
+  --ink:#f2f0ea;
+  --accent:#c8ff00;
+  --accent2:#7b5cff;
+  --muted:#8a8a85;
+  --font-d:'Syne',sans-serif;
+  --font-b:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-b);
+  overflow-x:hidden;
+  cursor:none;
+}
+::selection{background:var(--accent);color:#000}
+a{color:inherit;text-decoration:none;cursor:none}
+button{cursor:none}
+
+/* ---------- noise overlay ---------- */
+.noise{
+  position:fixed;inset:-50%;width:200%;height:200%;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity:.05;pointer-events:none;z-index:9998;
+  animation:grain 8s steps(10) infinite;
+}
+@keyframes grain{
+  0%,100%{transform:translate(0,0)}10%{transform:translate(-5%,-10%)}
+  20%{transform:translate(-15%,5%)}30%{transform:translate(7%,-25%)}
+  40%{transform:translate(-5%,25%)}50%{transform:translate(-15%,10%)}
+  60%{transform:translate(15%,0)}70%{transform:translate(0,15%)}
+  80%{transform:translate(3%,35%)}90%{transform:translate(-10%,10%)}
+}
+
+/* ---------- cursor ---------- */
+.cursor-dot,.cursor-ring{
+  position:fixed;top:0;left:0;pointer-events:none;z-index:9999;
+  border-radius:50%;transform:translate(-50%,-50%);
+}
+.cursor-dot{width:8px;height:8px;background:var(--accent)}
+.cursor-ring{
+  width:40px;height:40px;border:1px solid rgba(242,240,234,.5);
+  transition:width .35s ease,height .35s ease,background .35s ease,border-color .35s;
+}
+.cursor-ring.is-hover{width:70px;height:70px;background:rgba(200,255,0,.12);border-color:var(--accent)}
+@media (hover:none){.cursor-dot,.cursor-ring{display:none}body,a,button{cursor:auto}}
+
+/* ---------- preloader ---------- */
+.preloader{
+  position:fixed;inset:0;z-index:9000;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2rem;
+}
+.preloader .counter{
+  font-family:var(--font-d);font-weight:800;
+  font-size:clamp(5rem,18vw,14rem);line-height:1;color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.preloader .bar{
+  width:min(420px,70vw);height:2px;background:#222;position:relative;overflow:hidden;
+}
+.preloader .bar i{
+  position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left;display:block;
+}
+.preloader .shutter{
+  position:absolute;inset:0;background:var(--accent);transform:scaleY(0);transform-origin:bottom;z-index:-1;
+}
+
+/* ---------- nav ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.5rem 3rem;mix-blend-mode:difference;
+}
+nav .logo{font-family:var(--font-d);font-weight:800;font-size:1.3rem;letter-spacing:-.02em}
+nav .links{display:flex;gap:2.2rem;font-size:.85rem;text-transform:uppercase;letter-spacing:.12em}
+nav .links a{position:relative;overflow:hidden;display:inline-block}
+nav .links a::after{
+  content:'';position:absolute;left:0;bottom:0;width:100%;height:1px;
+  background:var(--ink);transform:scaleX(0);transform-origin:right;transition:transform .4s cubic-bezier(.76,0,.24,1);
+}
+nav .links a:hover::after{transform:scaleX(1);transform-origin:left}
+@media(max-width:700px){nav .links{display:none}}
+
+/* ---------- hero ---------- */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  padding:0 3rem;position:relative;overflow:hidden;
+}
+.hero .blob{
+  position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;pointer-events:none;
+}
+.blob-a{width:55vw;height:55vw;background:var(--accent2);top:-20%;right:-15%}
+.blob-b{width:40vw;height:40vw;background:#1d4ed8;bottom:-25%;left:-10%}
+.blob-c{width:25vw;height:25vw;background:var(--accent);top:40%;left:35%;opacity:.18}
+.hero h1{
+  font-family:var(--font-d);font-weight:800;text-transform:uppercase;
+  font-size:clamp(3rem,11.5vw,11.5rem);line-height:.92;letter-spacing:-.03em;
+  position:relative;z-index:2;
+}
+.hero h1 .line{display:block;overflow:hidden}
+.hero h1 .line span{display:inline-block;will-change:transform}
+.hero h1 .outline{
+  color:transparent;-webkit-text-stroke:2px var(--ink);
+}
+.hero h1 .accent{color:var(--accent)}
+.hero .sub{
+  margin-top:2.5rem;display:flex;justify-content:space-between;align-items:flex-end;
+  gap:2rem;flex-wrap:wrap;position:relative;z-index:2;
+}
+.hero .sub p{max-width:34ch;color:var(--muted);font-size:1.05rem;line-height:1.6}
+.scroll-hint{
+  display:flex;align-items:center;gap:.8rem;font-size:.75rem;
+  text-transform:uppercase;letter-spacing:.2em;color:var(--muted);
+}
+.scroll-hint .wheel{
+  width:22px;height:36px;border:1px solid var(--muted);border-radius:11px;position:relative;
+}
+.scroll-hint .wheel::after{
+  content:'';position:absolute;top:6px;left:50%;width:3px;height:7px;margin-left:-1.5px;
+  background:var(--accent);border-radius:2px;animation:wheel 1.6s ease infinite;
+}
+@keyframes wheel{0%{transform:translateY(0);opacity:1}70%{transform:translateY(12px);opacity:0}100%{opacity:0}}
+
+/* ---------- marquee ---------- */
+.marquee{
+  border-top:1px solid #1f1f1f;border-bottom:1px solid #1f1f1f;
+  padding:1.4rem 0;overflow:hidden;white-space:nowrap;background:var(--bg);position:relative;z-index:3;
+}
+.marquee .track{display:inline-flex;gap:3rem;will-change:transform}
+.marquee .track span{
+  font-family:var(--font-d);font-weight:700;font-size:1.6rem;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:3rem;
+}
+.marquee .track span i{font-style:normal;color:var(--accent)}
+.marquee.alt .track span{color:transparent;-webkit-text-stroke:1px var(--muted)}
+
+/* ---------- sections common ---------- */
+section{position:relative}
+.section-pad{padding:9rem 3rem}
+.eyebrow{
+  font-size:.78rem;text-transform:uppercase;letter-spacing:.25em;color:var(--accent);
+  display:flex;align-items:center;gap:.9rem;margin-bottom:2.4rem;
+}
+.eyebrow::before{content:'';width:42px;height:1px;background:var(--accent)}
+h2.big{
+  font-family:var(--font-d);font-weight:800;text-transform:uppercase;
+  font-size:clamp(2.4rem,6.5vw,6rem);line-height:1;letter-spacing:-.02em;
+}
+h2.big .word{display:inline-block;overflow:hidden;vertical-align:top}
+h2.big .word span{display:inline-block;will-change:transform}
+
+/* ---------- about / reveal text ---------- */
+.about p.reveal-text{
+  font-size:clamp(1.4rem,3vw,2.4rem);line-height:1.45;max-width:24ch;
+  font-weight:400;margin-top:3rem;
+}
+.reveal-text .w{opacity:.12;display:inline-block;transition:none}
+.about .stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:2rem;margin-top:6rem;
+}
+.stat{border-top:1px solid #222;padding-top:1.4rem}
+.stat .num{
+  font-family:var(--font-d);font-weight:800;font-size:clamp(2.6rem,5vw,4.4rem);
+  color:var(--accent);line-height:1;font-variant-numeric:tabular-nums;
+}
+.stat .lbl{color:var(--muted);margin-top:.6rem;font-size:.85rem;text-transform:uppercase;letter-spacing:.15em}
+
+/* ---------- horizontal work ---------- */
+.work{overflow:hidden}
+.work .pin-wrap{display:flex;align-items:center;height:100vh}
+.work .h-track{display:flex;gap:4vw;padding:0 3rem;will-change:transform}
+.card{
+  flex:0 0 auto;width:min(560px,78vw);height:68vh;border-radius:18px;
+  position:relative;overflow:hidden;background:#141414;border:1px solid #222;
+  display:flex;flex-direction:column;justify-content:flex-end;padding:2.2rem;
+}
+.card .bg{
+  position:absolute;inset:-12%;background:radial-gradient(circle at 30% 20%,var(--c1),transparent 60%),
+  radial-gradient(circle at 75% 80%,var(--c2),transparent 55%);
+  filter:saturate(1.2);will-change:transform;
+}
+.card .idx{
+  position:absolute;top:1.6rem;right:2rem;font-family:var(--font-d);font-weight:800;
+  font-size:5rem;color:transparent;-webkit-text-stroke:1.5px rgba(242,240,234,.35);line-height:1;
+}
+.card h3{font-family:var(--font-d);font-weight:700;font-size:2rem;position:relative;z-index:1}
+.card .tag{position:relative;z-index:1;color:rgba(242,240,234,.7);margin-top:.5rem;font-size:.9rem;text-transform:uppercase;letter-spacing:.15em}
+.card:hover .bg{transform:scale(1.06)}
+.card .bg{transition:transform .8s cubic-bezier(.22,1,.36,1)}
+
+/* ---------- services list ---------- */
+.services .row{
+  border-top:1px solid #222;padding:2.6rem 0;display:flex;align-items:baseline;
+  justify-content:space-between;gap:2rem;position:relative;overflow:hidden;
+}
+.services .row:last-child{border-bottom:1px solid #222}
+.services .row .fill{
+  position:absolute;inset:0;background:var(--accent);transform:scaleY(0);transform-origin:bottom;
+  transition:transform .5s cubic-bezier(.76,0,.24,1);z-index:0;
+}
+.services .row:hover .fill{transform:scaleY(1)}
+.services .row *{position:relative;z-index:1;transition:color .4s}
+.services .row:hover h3,.services .row:hover .no,.services .row:hover p{color:#000}
+.services .row .no{font-family:var(--font-d);color:var(--muted);font-size:.95rem;width:3.5rem;flex:0 0 auto}
+.services .row h3{
+  font-family:var(--font-d);font-weight:700;font-size:clamp(1.6rem,4vw,3.2rem);
+  text-transform:uppercase;letter-spacing:-.01em;flex:1;
+}
+.services .row p{color:var(--muted);max-width:30ch;font-size:.95rem;line-height:1.55}
+@media(max-width:700px){.services .row{flex-wrap:wrap}.services .row p{max-width:none}}
+
+/* ---------- parallax quote ---------- */
+.quote{
+  min-height:90vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;position:relative;
+}
+.quote .giant{
+  position:absolute;font-family:var(--font-d);font-weight:800;font-size:26vw;
+  color:transparent;-webkit-text-stroke:1px #242424;white-space:nowrap;user-select:none;
+}
+.quote blockquote{
+  font-family:var(--font-d);font-weight:700;font-size:clamp(1.8rem,4.5vw,4rem);
+  line-height:1.2;max-width:18ch;position:relative;z-index:1;
+}
+.quote blockquote em{font-style:normal;color:var(--accent)}
+
+/* ---------- cta ---------- */
+.cta{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:3rem;overflow:hidden;
+}
+.cta h2{
+  font-family:var(--font-d);font-weight:800;text-transform:uppercase;
+  font-size:clamp(3rem,10vw,9rem);line-height:.95;letter-spacing:-.03em;
+}
+.cta h2 .line{display:block;overflow:hidden}
+.cta h2 .line span{display:inline-block}
+.magnet{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  width:190px;height:190px;border-radius:50%;border:1px solid var(--ink);
+  font-family:var(--font-d);font-weight:700;text-transform:uppercase;font-size:.95rem;
+  letter-spacing:.1em;background:transparent;color:var(--ink);overflow:hidden;
+  transition:color .4s;will-change:transform;
+}
+.magnet::before{
+  content:'';position:absolute;inset:0;border-radius:50%;background:var(--accent);
+  transform:scale(0);transition:transform .5s cubic-bezier(.34,1.56,.64,1);
+}
+.magnet:hover{color:#000}
+.magnet:hover::before{transform:scale(1)}
+.magnet span{position:relative;z-index:1}
+
+/* ---------- footer ---------- */
+footer{
+  border-top:1px solid #1f1f1f;padding:3rem;display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:1.5rem;color:var(--muted);font-size:.85rem;
+  text-transform:uppercase;letter-spacing:.12em;
+}
+footer a:hover{color:var(--accent)}
+
+/* progress bar */
+.progress{
+  position:fixed;top:0;left:0;right:0;height:3px;z-index:1001;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+}
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+<div class="progress"></div>
+
+<!-- PRELOADER -->
+<div class="preloader">
+  <div class="counter">0</div>
+  <div class="bar"><i></i></div>
+  <div class="shutter"></div>
+</div>
+
+<nav>
+  <div class="logo">KINETIC®</div>
+  <div class="links">
+    <a href="#work">Work</a>
+    <a href="#services">Services</a>
+    <a href="#about">Studio</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="blob blob-a" data-speed="0.35"></div>
+  <div class="blob blob-b" data-speed="0.2"></div>
+  <div class="blob blob-c" data-speed="0.5"></div>
+  <h1>
+    <span class="line"><span>We make</span></span>
+    <span class="line"><span class="outline">pixels</span></span>
+    <span class="line"><span><em class="accent" style="font-style:normal">move.</em></span></span>
+  </h1>
+  <div class="sub">
+    <p>Kinetic is a motion-first design studio crafting kinetic identities, film-grade web experiences and brand systems that refuse to sit still.</p>
+    <div class="scroll-hint"><div class="wheel"></div> Scroll to explore</div>
+  </div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee" data-dir="1">
+  <div class="track">
+    <span>Motion Design <i>✦</i> Brand Identity <i>✦</i> Web Experiences <i>✦</i> 3D &amp; CGI <i>✦</i></span>
+    <span>Motion Design <i>✦</i> Brand Identity <i>✦</i> Web Experiences <i>✦</i> 3D &amp; CGI <i>✦</i></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about section-pad" id="about">
+  <div class="eyebrow">The Studio</div>
+  <h2 class="big" data-split>Born to animate everything</h2>
+  <p class="reveal-text">Every frame is a decision. We obsess over the in-betweens — the easing, the overshoot, the half-second of anticipation that turns interfaces into experiences.</p>
+  <div class="stats">
+    <div class="stat"><div class="num" data-count="120">0</div><div class="lbl">Projects shipped</div></div>
+    <div class="stat"><div class="num" data-count="18">0</div><div class="lbl">Industry awards</div></div>
+    <div class="stat"><div class="num" data-count="9">0</div><div class="lbl">Years in motion</div></div>
+    <div class="stat"><div class="num" data-count="60">0</div><div class="lbl">FPS minimum</div></div>
+  </div>
+</section>
+
+<!-- HORIZONTAL WORK -->
+<section class="work" id="work">
+  <div class="pin-wrap">
+    <div class="h-track">
+      <div class="card" style="--c1:#7b5cff;--c2:#c8ff00">
+        <div class="bg"></div><div class="idx">01</div>
+        <h3>Neon District</h3><div class="tag">Brand film · 3D</div>
+      </div>
+      <div class="card" style="--c1:#ff5c7a;--c2:#1d4ed8">
+        <div class="bg"></div><div class="idx">02</div>
+        <h3>Pulse OS</h3><div class="tag">Product motion system</div>
+      </div>
+      <div class="card" style="--c1:#00d4ff;--c2:#7b5cff">
+        <div class="bg"></div><div class="idx">03</div>
+        <h3>Orbital</h3><div class="tag">WebGL experience</div>
+      </div>
+      <div class="card" style="--c1:#c8ff00;--c2:#ff5c7a">
+        <div class="bg"></div><div class="idx">04</div>
+        <h3>Velvet Audio</h3><div class="tag">Kinetic identity</div>
+      </div>
+      <div class="card" style="--c1:#1d4ed8;--c2:#00d4ff">
+        <div class="bg"></div><div class="idx">05</div>
+        <h3>Aftermath</h3><div class="tag">Title sequence</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE 2 -->
+<div class="marquee alt" data-dir="-1">
+  <div class="track">
+    <span>Award Winning <i>✦</i> Frame Perfect <i>✦</i> Sixty FPS <i>✦</i> Zero Jank <i>✦</i></span>
+    <span>Award Winning <i>✦</i> Frame Perfect <i>✦</i> Sixty FPS <i>✦</i> Zero Jank <i>✦</i></span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services section-pad" id="services">
+  <div class="eyebrow">Capabilities</div>
+  <h2 class="big" data-split>What we do</h2>
+  <div style="margin-top:4rem">
+    <div class="row"><div class="fill"></div><span class="no">01</span><h3>Motion Identity</h3><p>Logo systems and brand languages designed to live in motion from day one.</p></div>
+    <div class="row"><div class="fill"></div><span class="no">02</span><h3>Web Experiences</h3><p>Scroll-driven, WebGL-powered sites that feel like films you can touch.</p></div>
+    <div class="row"><div class="fill"></div><span class="no">03</span><h3>3D &amp; CGI</h3><p>Full-CG product films, simulations and stylized worlds rendered to the frame.</p></div>
+    <div class="row"><div class="fill"></div><span class="no">04</span><h3>Title Sequences</h3><p>Opening credits and show packages with narrative-grade typography.</p></div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote">
+  <div class="giant" data-speed="0.6">MOTION</div>
+  <blockquote>“Animation is not the art of drawings that move, but of <em>movements that are drawn</em>.”</blockquote>
+</section>
+
+<!-- CTA -->
+<section class="cta section-pad" id="contact">
+  <h2>
+    <span class="line"><span>Let’s make</span></span>
+    <span class="line"><span style="color:var(--accent)">something</span></span>
+    <span class="line"><span>move</span></span>
+  </h2>
+  <button class="magnet" data-magnet><span>Start a<br>project ↗</span></button>
+</section>
+
+<footer>
+  <span>© 2026 Kinetic Studio</span>
+  <span><a href="#">Instagram</a> &nbsp;/&nbsp; <a href="#">Vimeo</a> &nbsp;/&nbsp; <a href="#">X</a></span>
+  <span>Made with 60fps love</span>
+</footer>
+
+<script src="assets/gsap.min.js"></script>
+<script src="assets/ScrollTrigger.min.js"></script>
+<script src="assets/lenis.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ---------- smooth scroll ---------- */
+const lenis = new Lenis({ lerp: 0.09 });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t => lenis.raf(t * 1000));
+gsap.ticker.lagSmoothing(0);
+
+/* ---------- custom cursor ---------- */
+const dot = document.querySelector('.cursor-dot');
+const ring = document.querySelector('.cursor-ring');
+const xDot = gsap.quickTo(dot, 'x', {duration: .08, ease: 'power2'});
+const yDot = gsap.quickTo(dot, 'y', {duration: .08, ease: 'power2'});
+const xRing = gsap.quickTo(ring, 'x', {duration: .35, ease: 'power3'});
+const yRing = gsap.quickTo(ring, 'y', {duration: .35, ease: 'power3'});
+window.addEventListener('mousemove', e => {
+  xDot(e.clientX); yDot(e.clientY); xRing(e.clientX); yRing(e.clientY);
+});
+document.querySelectorAll('a,button,.card,.row').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('is-hover'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('is-hover'));
+});
+
+/* ---------- split helper ---------- */
+document.querySelectorAll('[data-split]').forEach(h => {
+  h.innerHTML = h.textContent.trim().split(' ')
+    .map(w => `<span class="word"><span>${w}</span></span>`).join(' ');
+});
+document.querySelectorAll('.reveal-text').forEach(p => {
+  p.innerHTML = p.textContent.trim().split(' ')
+    .map(w => `<span class="w">${w}</span>`).join(' ');
+});
+
+/* ---------- preloader ---------- */
+const counter = document.querySelector('.preloader .counter');
+const loadTl = gsap.timeline({
+  onComplete: () => { document.querySelector('.preloader').remove(); heroIn(); }
+});
+const cnt = { v: 0 };
+loadTl
+  .to(cnt, { v: 100, duration: 1.8, ease: 'power2.inOut',
+    onUpdate: () => counter.textContent = Math.round(cnt.v) })
+  .to('.preloader .bar i', { scaleX: 1, duration: 1.8, ease: 'power2.inOut' }, 0)
+  .to('.preloader .counter, .preloader .bar', { y: -40, opacity: 0, duration: .5, ease: 'power2.in' })
+  .to('.preloader .shutter', { scaleY: 1, duration: .55, ease: 'power4.inOut' }, '-=.15')
+  .to('.preloader', { yPercent: -100, duration: .7, ease: 'power4.inOut' });
+
+/* ---------- hero intro ---------- */
+function heroIn(){
+  gsap.timeline()
+    .from('.hero h1 .line span', {
+      yPercent: 115, rotate: 4, duration: 1.1, stagger: .12, ease: 'power4.out'
+    })
+    .from('.hero .sub > *', { y: 40, opacity: 0, duration: .8, stagger: .15, ease: 'power3.out' }, '-=.5')
+    .from('nav', { y: -30, opacity: 0, duration: .7, ease: 'power3.out' }, '-=.8');
+}
+
+/* ---------- floating blobs ---------- */
+gsap.to('.blob-a', { x: -80, y: 90, duration: 9, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+gsap.to('.blob-b', { x: 100, y: -60, duration: 11, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+gsap.to('.blob-c', { x: -60, y: -80, duration: 7, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+
+/* hero parallax out */
+gsap.to('.hero h1', {
+  yPercent: -25, opacity: 0,
+  scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+});
+
+/* ---------- progress bar ---------- */
+gsap.to('.progress', {
+  scaleX: 1, ease: 'none',
+  scrollTrigger: { start: 0, end: 'max', scrub: .3 }
+});
+
+/* ---------- marquees (scroll-velocity reactive) ---------- */
+document.querySelectorAll('.marquee').forEach(m => {
+  const track = m.querySelector('.track');
+  const dir = +m.dataset.dir || 1;
+  const tween = gsap.to(track, { xPercent: -50 * dir, ease: 'none', duration: 18, repeat: -1 })
+    .progress(dir < 0 ? 1 : 0);
+  ScrollTrigger.create({
+    onUpdate: self => {
+      const v = gsap.utils.clamp(.3, 4, Math.abs(self.getVelocity()) / 300);
+      gsap.to(tween, { timeScale: v * dir * (self.direction || 1), duration: .4, overwrite: true });
+    }
+  });
+});
+
+/* ---------- headline word reveals ---------- */
+document.querySelectorAll('h2.big').forEach(h => {
+  gsap.from(h.querySelectorAll('.word span'), {
+    yPercent: 110, duration: .9, stagger: .06, ease: 'power4.out',
+    scrollTrigger: { trigger: h, start: 'top 82%' }
+  });
+});
+
+/* ---------- paragraph word-by-word opacity ---------- */
+document.querySelectorAll('.reveal-text').forEach(p => {
+  gsap.to(p.querySelectorAll('.w'), {
+    opacity: 1, stagger: .04, ease: 'none',
+    scrollTrigger: { trigger: p, start: 'top 80%', end: 'top 35%', scrub: true }
+  });
+});
+
+/* ---------- counters ---------- */
+document.querySelectorAll('[data-count]').forEach(el => {
+  const target = +el.dataset.count;
+  const obj = { v: 0 };
+  gsap.to(obj, {
+    v: target, duration: 1.6, ease: 'power2.out',
+    onUpdate: () => el.textContent = Math.round(obj.v),
+    scrollTrigger: { trigger: el, start: 'top 88%' }
+  });
+});
+
+/* ---------- horizontal scroll work ---------- */
+const track = document.querySelector('.h-track');
+function hScroll(){
+  return track.scrollWidth - window.innerWidth + 60;
+}
+gsap.to(track, {
+  x: () => -hScroll(), ease: 'none',
+  scrollTrigger: {
+    trigger: '.work', start: 'top top', end: () => '+=' + hScroll(),
+    pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1
+  }
+});
+/* cards skew with velocity */
+let proxy = { skew: 0 };
+const skewSetter = gsap.quickSetter('.card', 'skewX', 'deg');
+ScrollTrigger.create({
+  onUpdate: self => {
+    const skew = gsap.utils.clamp(-6, 6, self.getVelocity() / -400);
+    if (Math.abs(skew) > Math.abs(proxy.skew)) {
+      proxy.skew = skew;
+      gsap.to(proxy, {
+        skew: 0, duration: .6, ease: 'power3',
+        overwrite: true, onUpdate: () => skewSetter(proxy.skew)
+      });
+    }
+  }
+});
+
+/* ---------- services rows slide in ---------- */
+gsap.utils.toArray('.services .row').forEach((row, i) => {
+  gsap.from(row, {
+    x: i % 2 ? 80 : -80, opacity: 0, duration: .9, ease: 'power3.out',
+    scrollTrigger: { trigger: row, start: 'top 88%' }
+  });
+});
+
+/* ---------- parallax elements ---------- */
+gsap.utils.toArray('[data-speed]').forEach(el => {
+  gsap.to(el, {
+    yPercent: -40 * +el.dataset.speed, ease: 'none',
+    scrollTrigger: { trigger: el.closest('section,header'), start: 'top bottom', end: 'bottom top', scrub: true }
+  });
+});
+
+/* giant background word drifts sideways */
+gsap.fromTo('.quote .giant', { x: '12vw' }, {
+  x: '-12vw', ease: 'none',
+  scrollTrigger: { trigger: '.quote', start: 'top bottom', end: 'bottom top', scrub: true }
+});
+gsap.from('.quote blockquote', {
+  scale: .85, opacity: 0, duration: 1, ease: 'power3.out',
+  scrollTrigger: { trigger: '.quote', start: 'top 65%' }
+});
+
+/* ---------- CTA lines ---------- */
+gsap.from('.cta h2 .line span', {
+  yPercent: 115, duration: 1, stagger: .1, ease: 'power4.out',
+  scrollTrigger: { trigger: '.cta', start: 'top 70%' }
+});
+
+/* ---------- magnetic button ---------- */
+const mag = document.querySelector('[data-magnet]');
+if (mag) {
+  const strength = 0.45;
+  mag.addEventListener('mousemove', e => {
+    const r = mag.getBoundingClientRect();
+    gsap.to(mag, {
+      x: (e.clientX - r.left - r.width / 2) * strength,
+      y: (e.clientY - r.top - r.height / 2) * strength,
+      duration: .4, ease: 'power3.out'
+    });
+  });
+  mag.addEventListener('mouseleave', () => {
+    gsap.to(mag, { x: 0, y: 0, duration: .7, ease: 'elastic.out(1,.4)' });
+  });
+}
+
+/* anchor links via lenis */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); lenis.scrollTo(target, { offset: 0 }); }
+  });
+});
+</script>
+</body>
+</html>
