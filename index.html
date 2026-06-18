@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>ETHEREALM — DeFi as a Living World</title>
+<meta name="description" content="Etherealm — decentralized finance reimagined as a surreal, living landscape. Non-custodial, audited, multi-chain." />
+
+<!-- Typography from the generated design system: Orbitron / Exo 2 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --night:#0a0a18;
+    --night-2:#0F172A;
+    --violet:#8B5CF6;
+    --violet-soft:#a78bfa;
+    --amber:#F59E0B;
+    --amber-soft:#FBBF24;
+    --pink:#f0abfc;
+    --text:#F8FAFC;
+    --muted:#b9b3d6;
+    --z-canvas:0;
+    --z-overlay:10;
+    --z-chrome:30;
+    --z-ui:50;
+    --z-loader:90;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{background:#05050f;}
+  body{
+    font-family:"Exo 2", system-ui, -apple-system, sans-serif;
+    color:var(--text);
+    background:#05050f;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--violet);color:#fff;}
+
+  /* ---------- Scroll spacer: native scroll drives the camera ---------- */
+  #scroll-space{position:relative;width:100%;height:720vh;pointer-events:none;}
+
+  /* ---------- WebGL canvas (the living world) ---------- */
+  #scene{position:fixed;inset:0;width:100vw;height:100vh;z-index:var(--z-canvas);display:block;}
+
+  /* atmospheric vignette + grain over the canvas */
+  #atmosphere{
+    position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(120% 90% at 50% 8%, transparent 40%, rgba(5,5,15,.55) 100%),
+      radial-gradient(100% 60% at 50% 120%, rgba(139,92,246,.16), transparent 60%);
+    mix-blend-mode:normal;
+  }
+  #grain{
+    position:fixed;inset:-50%;z-index:2;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 6s steps(6) infinite;
+  }
+  @keyframes grain{
+    0%{transform:translate(0,0)}10%{transform:translate(-4%,-4%)}30%{transform:translate(3%,-2%)}
+    50%{transform:translate(-2%,3%)}70%{transform:translate(4%,2%)}100%{transform:translate(0,0)}
+  }
+
+  /* ---------- Fixed chrome (brand + nav) ---------- */
+  .chrome{
+    position:fixed;top:0;left:0;right:0;z-index:var(--z-chrome);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:clamp(16px,2.4vw,30px) clamp(18px,3vw,46px);
+    pointer-events:none;
+  }
+  .brand{
+    pointer-events:auto;
+    display:flex;align-items:center;gap:12px;
+    font-family:"Orbitron",sans-serif;font-weight:700;letter-spacing:.34em;
+    font-size:clamp(13px,1.1vw,16px);
+  }
+  .brand .mark{
+    width:26px;height:26px;border-radius:50%;
+    background:conic-gradient(from 210deg,var(--amber),var(--pink),var(--violet),var(--amber));
+    box-shadow:0 0 18px rgba(245,158,11,.55),0 0 34px rgba(139,92,246,.45);
+    animation:spin 16s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  nav.links{pointer-events:auto;display:flex;align-items:center;gap:clamp(14px,2vw,34px);}
+  nav.links a{
+    font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+    transition:color .25s ease;position:relative;cursor:pointer;
+  }
+  nav.links a:not(.connect):hover{color:#fff;}
+  nav.links a:not(.connect)::after{
+    content:"";position:absolute;left:0;right:100%;bottom:-6px;height:1px;
+    background:linear-gradient(90deg,var(--amber),var(--violet));transition:right .3s ease;
+  }
+  nav.links a:not(.connect):hover::after{right:0;}
+  .connect{
+    padding:10px 20px;border-radius:999px;color:#fff !important;letter-spacing:.16em;
+    border:1px solid rgba(167,139,250,.5);
+    background:linear-gradient(120deg,rgba(139,92,246,.28),rgba(245,158,11,.18));
+    box-shadow:0 0 0 0 rgba(139,92,246,.4);
+    transition:box-shadow .3s ease,transform .2s ease,background .3s ease;
+  }
+  .connect:hover{box-shadow:0 0 26px rgba(139,92,246,.55);background:linear-gradient(120deg,rgba(139,92,246,.42),rgba(245,158,11,.3));}
+  @media(max-width:760px){ nav.links a.hide-sm{display:none;} }
+
+  /* ---------- Chapter overlays (environmental storytelling) ---------- */
+  #chapters{position:fixed;inset:0;z-index:var(--z-overlay);pointer-events:none;}
+  .chapter{
+    position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+    padding:0 clamp(20px,7vw,140px);
+    opacity:0;will-change:opacity,transform;
+  }
+  .chapter.align-center{align-items:center;text-align:center;padding-bottom:4vh;}
+  .chapter .overline{
+    font-family:"Orbitron",sans-serif;font-size:clamp(11px,1vw,14px);
+    letter-spacing:.5em;text-transform:uppercase;color:var(--amber-soft);
+    margin-bottom:clamp(14px,2vh,26px);text-shadow:0 0 14px rgba(245,158,11,.5);
+  }
+  .chapter h1{
+    font-family:"Orbitron",sans-serif;font-weight:900;margin:0;
+    line-height:.96;letter-spacing:-.01em;
+    font-size:clamp(44px,9.5vw,168px);
+    background:linear-gradient(180deg,#ffffff 0%,#e7defb 48%,#c4b5fd 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 60px rgba(139,92,246,.25);
+    filter:drop-shadow(0 14px 40px rgba(10,8,30,.6));
+  }
+  .chapter h1 .warm{
+    background:linear-gradient(180deg,#fff 0%,#ffd9a0 45%,#f59e0b 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .chapter p.lede{
+    margin:clamp(18px,2.6vh,30px) 0 0;max-width:34ch;
+    font-size:clamp(16px,1.55vw,23px);line-height:1.6;color:var(--muted);font-weight:300;
+  }
+  .chapter.align-center p.lede{max-width:48ch;}
+
+  /* CTA chapter */
+  .cta-actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center;margin-top:clamp(26px,4vh,42px);pointer-events:auto;}
+  .btn-primary{
+    font-family:"Orbitron",sans-serif;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+    font-size:15px;color:#0a0a18;cursor:pointer;border:none;
+    padding:18px 38px;border-radius:999px;
+    background:linear-gradient(120deg,var(--amber-soft),var(--amber) 55%,var(--pink));
+    box-shadow:0 10px 40px rgba(245,158,11,.4),0 0 0 1px rgba(255,255,255,.25) inset;
+    transition:transform .2s ease,box-shadow .3s ease,filter .3s ease;
+  }
+  .btn-primary:hover{box-shadow:0 16px 60px rgba(245,158,11,.6);filter:brightness(1.06);}
+  .btn-primary:active{transform:translateY(1px);}
+  .btn-primary:focus-visible{outline:3px solid var(--violet-soft);outline-offset:4px;}
+  .trust{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:13px;letter-spacing:.14em;text-transform:uppercase;}
+  .trust .dot{width:5px;height:5px;border-radius:50%;background:var(--violet-soft);box-shadow:0 0 10px var(--violet-soft);}
+
+  /* ---------- Side progress / chapter rail ---------- */
+  .rail{
+    position:fixed;right:clamp(14px,2vw,34px);top:50%;transform:translateY(-50%);
+    z-index:var(--z-ui);display:flex;flex-direction:column;gap:16px;align-items:center;pointer-events:none;
+  }
+  .rail .tick{
+    width:9px;height:9px;border-radius:50%;border:1px solid rgba(167,139,250,.5);
+    background:transparent;transition:background .3s ease,box-shadow .3s ease,transform .3s ease;
+  }
+  .rail .tick.on{background:var(--amber);box-shadow:0 0 14px var(--amber);transform:scale(1.25);border-color:var(--amber);}
+  @media(max-width:760px){.rail{display:none;}}
+
+  /* ---------- Scroll hint ---------- */
+  .scroll-hint{
+    position:fixed;left:50%;bottom:clamp(20px,4vh,40px);transform:translateX(-50%);
+    z-index:var(--z-ui);display:flex;flex-direction:column;align-items:center;gap:10px;
+    color:var(--muted);font-size:11px;letter-spacing:.42em;text-transform:uppercase;
+    transition:opacity .5s ease;pointer-events:none;
+  }
+  .scroll-hint .track{width:1px;height:46px;background:linear-gradient(180deg,var(--amber),transparent);position:relative;overflow:hidden;}
+  .scroll-hint .track::after{content:"";position:absolute;left:0;top:0;width:1px;height:14px;background:#fff;animation:fall 1.8s ease-in-out infinite;}
+  @keyframes fall{0%{transform:translateY(-16px);opacity:0}30%{opacity:1}100%{transform:translateY(48px);opacity:0}}
+
+  /* ---------- Skip / reduce controls ---------- */
+  .controls{
+    position:fixed;left:clamp(18px,3vw,46px);bottom:clamp(18px,3.4vh,34px);z-index:var(--z-ui);
+    display:flex;gap:18px;align-items:center;pointer-events:auto;
+  }
+  .controls button{
+    background:none;border:none;color:var(--muted);cursor:pointer;font-family:"Exo 2",sans-serif;
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;display:flex;align-items:center;gap:8px;
+    transition:color .25s ease;
+  }
+  .controls button:hover{color:#fff;}
+  .controls button svg{width:14px;height:14px;}
+
+  /* ---------- Loader ---------- */
+  #loader{
+    position:fixed;inset:0;z-index:var(--z-loader);background:#05050f;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;
+    transition:opacity .9s ease,visibility .9s ease;
+  }
+  #loader.gone{opacity:0;visibility:hidden;}
+  .loader-mark{
+    width:74px;height:74px;border-radius:50%;
+    background:conic-gradient(from 0deg,var(--amber),var(--pink),var(--violet),var(--amber));
+    -webkit-mask:radial-gradient(circle 27px at center,transparent 98%,#000 100%);
+            mask:radial-gradient(circle 27px at center,transparent 98%,#000 100%);
+    animation:spin 2.4s linear infinite;
+    box-shadow:0 0 40px rgba(139,92,246,.5);
+  }
+  .loader-title{font-family:"Orbitron",sans-serif;letter-spacing:.5em;font-size:14px;color:#fff;text-indent:.5em;}
+  .loader-bar{width:min(240px,60vw);height:2px;background:rgba(167,139,250,.2);border-radius:2px;overflow:hidden;}
+  .loader-bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--amber),var(--violet));transition:width .3s ease;}
+  .loader-sub{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted);}
+
+  /* ---------- WebGL-unsupported fallback ---------- */
+  #fallback{
+    position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;text-align:center;
+    padding:40px;background:
+      radial-gradient(120% 80% at 50% 120%,rgba(245,158,11,.3),transparent 55%),
+      radial-gradient(100% 70% at 50% -10%,rgba(139,92,246,.4),transparent 60%),
+      #0a0a18;
+  }
+  #fallback .inner{max-width:560px;}
+
+  /* ---------- Reduced-motion / static document mode ---------- */
+  body.static-mode #scroll-space{height:auto;}
+  body.static-mode #scene{position:fixed;opacity:.9;}
+  body.static-mode #chapters{position:static;}
+  body.static-mode #chapters .chapter{
+    position:relative;opacity:1 !important;transform:none !important;
+    min-height:92vh;justify-content:center;
+  }
+  body.static-mode .scroll-hint,body.static-mode .rail{display:none;}
+
+  @media (prefers-reduced-motion: reduce){
+    #grain,.scroll-hint .track::after,.loader-mark,.brand .mark{animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+  <!-- The living world -->
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div id="atmosphere" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+
+  <!-- Fixed chrome -->
+  <header class="chrome">
+    <div class="brand"><span class="mark"></span><span>ETHEREALM</span></div>
+    <nav class="links" aria-label="Primary">
+      <a href="#" class="hide-sm">Manifesto</a>
+      <a href="#" class="hide-sm">Vaults</a>
+      <a href="#" class="hide-sm">Docs</a>
+      <a href="#" class="connect">Connect Wallet</a>
+    </nav>
+  </header>
+
+  <!-- Environmental storytelling overlays -->
+  <main id="chapters">
+    <section class="chapter" data-chapter="0">
+      <div class="overline">Decentralized · Non-custodial · Multi-chain</div>
+      <h1>ETHER<span class="warm">REALM</span></h1>
+      <p class="lede">Decentralized finance, reimagined as a world you can <em>feel</em>. Leave the dashboards behind.</p>
+    </section>
+
+    <section class="chapter" data-chapter="1">
+      <div class="overline">01 — Arrival</div>
+      <h1>Your assets,<br>a living<br><span class="warm">landscape.</span></h1>
+      <p class="lede">No tickers. No noise. Watch value take shape across an endless, breathing terrain.</p>
+    </section>
+
+    <section class="chapter" data-chapter="2">
+      <div class="overline">02 — The Vaults</div>
+      <h1>Yield that<br>grows like<br>the <span class="warm">wild.</span></h1>
+      <p class="lede">Crystalline vaults bloom where liquidity gathers. Stake, and the world responds in light.</p>
+    </section>
+
+    <section class="chapter" data-chapter="3">
+      <div class="overline">03 — The Ecosystem</div>
+      <h1>A protocol<br>that <span class="warm">breathes.</span></h1>
+      <p class="lede">Creatures of code drift on currents of capital. Everything here is alive, on-chain, and yours.</p>
+    </section>
+
+    <section class="chapter align-center" data-chapter="4">
+      <div class="overline">04 — The Threshold</div>
+      <h1>Step <span class="warm">through.</span></h1>
+      <p class="lede">The realm is open. Bring your wallet and cross into a financial world built to be explored.</p>
+      <div class="cta-actions">
+        <button class="btn-primary" type="button">Enter Etherealm</button>
+        <div class="trust"><span class="dot"></span>Audited &nbsp;<span class="dot"></span>&nbsp; Non-custodial &nbsp;<span class="dot"></span>&nbsp; 12 chains</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Chapter rail -->
+  <div class="rail" aria-hidden="true">
+    <span class="tick on"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="scroll-hint" id="scrollHint"><span>Scroll to descend</span><span class="track"></span></div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button id="skipBtn" type="button" aria-label="Skip the journey to the call to action">
+      Skip the journey
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <button id="motionBtn" type="button" aria-pressed="false" aria-label="Toggle motion">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+      <span id="motionLabel">Reduce motion</span>
+    </button>
+  </div>
+
+  <!-- Scroll spacer -->
+  <div id="scroll-space"></div>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="loader-mark"></div>
+    <div class="loader-title">ETHEREALM</div>
+    <div class="loader-bar"><i id="loaderBar"></i></div>
+    <div class="loader-sub" id="loaderSub">Summoning the realm…</div>
+  </div>
+
+  <!-- WebGL fallback -->
+  <div id="fallback">
+    <div class="inner">
+      <div class="overline" style="color:var(--amber-soft);font-family:Orbitron;letter-spacing:.5em;margin-bottom:18px;">ETHEREALM</div>
+      <h1 style="font-family:Orbitron;font-weight:900;font-size:clamp(36px,8vw,72px);margin:0 0 18px;line-height:1;">DeFi as a living world.</h1>
+      <p style="color:var(--muted);font-size:18px;line-height:1.6;max-width:46ch;margin:0 auto 28px;">Your browser can't render the 3D realm, but the door is still open. Etherealm is non-custodial, audited, and multi-chain.</p>
+      <button class="btn-primary" type="button">Enter Etherealm</button>
+    </div>
+  </div>
+
+<!-- Smooth scroll (local asset) — gracefully optional -->
+<script src="./vendor/lenis.min.js"></script>
+
+<!-- Three.js is vendored locally (./vendor/three) so the realm is fully
+     self-contained and needs no CDN at runtime. -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/three.module.js",
+    "three/addons/": "./vendor/three/addons/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+/* ============================================================
+   Etherealm — an interactive WebGL realm.
+   Native scroll drives a cinematic camera flight along a spline,
+   descending from the clouds, over stylized peaks, into a valley
+   of crystalline vaults, past drifting creatures, to a glowing portal.
+   ============================================================ */
+
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobile = matchMedia('(max-width:760px)').matches || ('ontouchstart' in window && innerWidth < 900);
+
+const canvas = document.getElementById('scene');
+const loader = document.getElementById('loader');
+const loaderBar = document.getElementById('loaderBar');
+const loaderSub = document.getElementById('loaderSub');
+
+/* ---------- WebGL capability check ---------- */
+function webglOK(){
+  try{ const c=document.createElement('canvas');
+    return !!(window.WebGLRenderingContext && (c.getContext('webgl')||c.getContext('experimental-webgl'))); }
+  catch(e){ return false; }
+}
+if(!webglOK()){
+  document.getElementById('fallback').style.display='flex';
+  loader.classList.add('gone');
+  document.getElementById('scene').style.display='none';
+  throw new Error('WebGL unavailable');
+}
+
+/* ============================================================
+   Compact 3D simplex noise (Stefan Gustavson / Ashima, JS port)
+   Used to sculpt the terrain on the CPU so we can place objects
+   on its surface.
+   ============================================================ */
+const Noise = (()=>{
+  const grad3 = new Float32Array([1,1,0,-1,1,0,1,-1,0,-1,-1,0,1,0,1,-1,0,1,1,0,-1,-1,0,-1,0,1,1,0,-1,1,0,1,-1,0,-1,-1]);
+  const p = new Uint8Array(256);
+  for(let i=0;i<256;i++) p[i]=i;
+  let seed=1337; const rnd=()=>{ seed=(seed*16807)%2147483647; return (seed-1)/2147483646; };
+  for(let i=255;i>0;i--){ const n=Math.floor(rnd()*(i+1)); const t=p[i]; p[i]=p[n]; p[n]=t; }
+  const perm=new Uint8Array(512), permMod12=new Uint8Array(512);
+  for(let i=0;i<512;i++){ perm[i]=p[i&255]; permMod12[i]=perm[i]%12; }
+  const F3=1/3, G3=1/6;
+  return function snoise(x,y,z){
+    let n0,n1,n2,n3;
+    const s=(x+y+z)*F3;
+    const i=Math.floor(x+s), j=Math.floor(y+s), k=Math.floor(z+s);
+    const t=(i+j+k)*G3;
+    const X0=i-t,Y0=j-t,Z0=k-t;
+    const x0=x-X0,y0=y-Y0,z0=z-Z0;
+    let i1,j1,k1,i2,j2,k2;
+    if(x0>=y0){
+      if(y0>=z0){i1=1;j1=0;k1=0;i2=1;j2=1;k2=0;}
+      else if(x0>=z0){i1=1;j1=0;k1=0;i2=1;j2=0;k2=1;}
+      else{i1=0;j1=0;k1=1;i2=1;j2=0;k2=1;}
+    }else{
+      if(y0<z0){i1=0;j1=0;k1=1;i2=0;j2=1;k2=1;}
+      else if(x0<z0){i1=0;j1=1;k1=0;i2=0;j2=1;k2=1;}
+      else{i1=0;j1=1;k1=0;i2=1;j2=1;k2=0;}
+    }
+    const x1=x0-i1+G3,y1=y0-j1+G3,z1=z0-k1+G3;
+    const x2=x0-i2+2*G3,y2=y0-j2+2*G3,z2=z0-k2+2*G3;
+    const x3=x0-1+3*G3,y3=y0-1+3*G3,z3=z0-1+3*G3;
+    const ii=i&255,jj=j&255,kk=k&255;
+    let t0=0.6-x0*x0-y0*y0-z0*z0;
+    if(t0<0)n0=0;else{const gi=permMod12[ii+perm[jj+perm[kk]]]*3;t0*=t0;n0=t0*t0*(grad3[gi]*x0+grad3[gi+1]*y0+grad3[gi+2]*z0);}
+    let t1=0.6-x1*x1-y1*y1-z1*z1;
+    if(t1<0)n1=0;else{const gi=permMod12[ii+i1+perm[jj+j1+perm[kk+k1]]]*3;t1*=t1;n1=t1*t1*(grad3[gi]*x1+grad3[gi+1]*y1+grad3[gi+2]*z1);}
+    let t2=0.6-x2*x2-y2*y2-z2*z2;
+    if(t2<0)n2=0;else{const gi=permMod12[ii+i2+perm[jj+j2+perm[kk+k2]]]*3;t2*=t2;n2=t2*t2*(grad3[gi]*x2+grad3[gi+1]*y2+grad3[gi+2]*z2);}
+    let t3=0.6-x3*x3-y3*y3-z3*z3;
+    if(t3<0)n3=0;else{const gi=permMod12[ii+1+perm[jj+1+perm[kk+1]]]*3;t3*=t3;n3=t3*t3*(grad3[gi]*x3+grad3[gi+1]*y3+grad3[gi+2]*z3);}
+    return 32*(n0+n1+n2+n3);
+  };
+})();
+
+/* ============================================================
+   Renderer / scene / camera
+   ============================================================ */
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:!isMobile, powerPreference:'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile?1.5:2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+
+const scene = new THREE.Scene();
+const COL = {
+  night:  new THREE.Color('#0a0a18'),
+  indigo: new THREE.Color('#1a1033'),
+  violet: new THREE.Color('#4c1d95'),
+  amber:  new THREE.Color('#f59e0b'),
+  amberS: new THREE.Color('#fbbf24'),
+  peak:   new THREE.Color('#ffd9a0'),
+  valley: new THREE.Color('#140d2e'),
+  mid:    new THREE.Color('#3b2a6b'),
+};
+scene.fog = new THREE.FogExp2('#241048', 0.0019);
+
+const camera = new THREE.PerspectiveCamera(58, innerWidth/innerHeight, 0.1, 4000);
+camera.position.set(0,120,340);
+
+/* ---------- Lights: a low, warm sun + cool sky fill ---------- */
+const sun = new THREE.DirectionalLight('#ffce8a', 2.4);
+sun.position.set(-60, 60, -420);
+scene.add(sun);
+const hemi = new THREE.HemisphereLight('#9a7bff', '#160c2e', 0.9);
+scene.add(hemi);
+const fill = new THREE.PointLight('#8b5cf6', 0.7, 1200);
+fill.position.set(120, 80, 80);
+scene.add(fill);
+
+/* ============================================================
+   Sky dome — painted gradient (deep indigo -> violet -> amber horizon)
+   ============================================================ */
+const skyGeo = new THREE.SphereGeometry(2200, 48, 24);
+const skyMat = new THREE.ShaderMaterial({
+  side: THREE.BackSide, depthWrite:false,
+  uniforms:{
+    top:{value:new THREE.Color('#120a2b')},
+    mid:{value:new THREE.Color('#3a1466')},
+    hor:{value:new THREE.Color('#b9447e')},
+    glow:{value:new THREE.Color('#f9a83c')},
+    sunDir:{value:new THREE.Vector3(-0.16,0.12,-1).normalize()},
+  },
+  vertexShader:`varying vec3 vDir; void main(){ vDir=normalize(position); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);} `,
+  fragmentShader:`
+    varying vec3 vDir; uniform vec3 top,mid,hor,glow,sunDir;
+    void main(){
+      float h=clamp(vDir.y*0.5+0.5,0.0,1.0);
+      vec3 c=mix(hor,mid,smoothstep(0.42,0.62,h));
+      c=mix(c,top,smoothstep(0.6,0.95,h));
+      float s=pow(max(dot(normalize(vDir),normalize(sunDir)),0.0),6.0);
+      c=mix(c,glow,s*0.9*smoothstep(0.3,0.62,h+0.18));
+      float band=pow(1.0-abs(h-0.5)*2.0,3.0);
+      c+=glow*band*0.18*smoothstep(0.36,0.5,h);
+      gl_FragColor=vec4(c,1.0);
+    }`
+});
+scene.add(new THREE.Mesh(skyGeo, skyMat));
+
+/* ---------- The sun: glowing sprite layers ---------- */
+function radialTex(stops){
+  const s=256,c=document.createElement('canvas');c.width=c.height=s;
+  const g=c.getContext('2d').createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
+  stops.forEach(([o,col])=>g.addColorStop(o,col));
+  const ctx=c.getContext('2d');ctx.fillStyle=g;ctx.fillRect(0,0,s,s);
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;
+}
+const sunTex = radialTex([[0,'rgba(255,247,224,1)'],[0.18,'rgba(255,214,140,0.95)'],[0.45,'rgba(245,158,11,0.45)'],[1,'rgba(245,158,11,0)']]);
+const sunSprite = new THREE.Sprite(new THREE.SpriteMaterial({map:sunTex,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true}));
+sunSprite.scale.set(620,620,1);
+sunSprite.position.set(-70,70,-1300);
+scene.add(sunSprite);
+const sunCore = new THREE.Sprite(new THREE.SpriteMaterial({map:radialTex([[0,'rgba(255,255,255,1)'],[0.4,'rgba(255,236,200,0.9)'],[1,'rgba(255,236,200,0)']]),blending:THREE.AdditiveBlending,depthWrite:false,transparent:true}));
+sunCore.scale.set(220,220,1); sunCore.position.copy(sunSprite.position); scene.add(sunCore);
+
+/* ============================================================
+   Terrain — stylized faceted mountains (painterly low-poly)
+   ============================================================ */
+const TSIZE = 2600, TSEG = isMobile?140:220;
+const terrainGeo = new THREE.PlaneGeometry(TSIZE, TSIZE, TSEG, TSEG);
+terrainGeo.rotateX(-Math.PI/2);
+
+function ridge(x,z){
+  // layered fbm with a ridged transform for mountainous spines
+  let e=0, amp=1, freq=0.0016, sum=0;
+  for(let o=0;o<5;o++){
+    let n=Noise(x*freq, 0, z*freq);
+    n=1-Math.abs(n);          // ridged
+    n*=n;
+    e+=n*amp; sum+=amp; amp*=0.5; freq*=2.05;
+  }
+  e/=sum;
+  // valley carved through the middle (the flight corridor)
+  const corridor = Math.exp(-Math.pow(x/260,2));
+  e *= (1 - corridor*0.72);
+  // gentle rolling base
+  e += Noise(x*0.0009, 10, z*0.0009)*0.12;
+  return e;
+}
+
+const pos = terrainGeo.attributes.position;
+const colors = new Float32Array(pos.count*3);
+let maxH=0;
+const heights = new Float32Array(pos.count);
+for(let i=0;i<pos.count;i++){
+  const x=pos.getX(i), z=pos.getZ(i);
+  let h=ridge(x,z)*340;
+  // fade terrain height down very close to the camera start so we "fly in"
+  heights[i]=h;
+  pos.setY(i,h);
+  if(h>maxH)maxH=h;
+}
+// vertex colours by normalized height: valley indigo -> violet slopes -> warm peaks
+const cV=COL.valley, cM=COL.mid, cP=COL.amberS, cPeak=COL.peak;
+const tmp=new THREE.Color();
+for(let i=0;i<pos.count;i++){
+  const t=THREE.MathUtils.clamp(heights[i]/300,0,1);
+  if(t<0.5){ tmp.copy(cV).lerp(cM, t/0.5); }
+  else if(t<0.82){ tmp.copy(cM).lerp(cP,(t-0.5)/0.32); }
+  else { tmp.copy(cP).lerp(cPeak,(t-0.82)/0.18); }
+  // warm rim toward the sun side (x negative / far z)
+  colors[i*3]=tmp.r; colors[i*3+1]=tmp.g; colors[i*3+2]=tmp.b;
+}
+terrainGeo.setAttribute('color', new THREE.BufferAttribute(colors,3));
+terrainGeo.computeVertexNormals();
+
+const terrainMat = new THREE.MeshStandardMaterial({
+  vertexColors:true, flatShading:true, roughness:0.95, metalness:0.0,
+  emissive:new THREE.Color('#2a1450'), emissiveIntensity:0.35,
+});
+const terrain = new THREE.Mesh(terrainGeo, terrainMat);
+terrain.position.z = -900;   // extends ahead of the camera
+scene.add(terrain);
+
+// helper: sample terrain height at world x,z (matches ridge())
+function terrainHeight(wx, wz){ return ridge(wx, wz - (-900))*340; }
+
+/* ============================================================
+   Crystalline vaults — glowing octahedra in the valley
+   ============================================================ */
+const crystals = [];
+const crystalMat = (hex)=> new THREE.MeshStandardMaterial({
+  color:hex, emissive:new THREE.Color(hex), emissiveIntensity:1.5,
+  metalness:0.2, roughness:0.15, transparent:true, opacity:0.92, flatShading:true,
+});
+const crystalSpots = [
+  [ -70, -380, 26, '#a78bfa'],
+  [  90, -560, 34, '#fbbf24'],
+  [ -40, -760, 22, '#f0abfc'],
+  [  60, -980, 30, '#8b5cf6'],
+  [ -90,-1180, 24, '#fbbf24'],
+  [  30,-1360, 38, '#a78bfa'],
+];
+crystalSpots.forEach(([x,z,s,hex],idx)=>{
+  const g=new THREE.OctahedronGeometry(s,0);
+  const m=new THREE.Mesh(g, crystalMat(hex));
+  const baseY = terrainHeight(x, z) + s*0.6 + 14;
+  m.position.set(x, baseY, z);
+  m.userData={baseY, spin:0.2+Math.random()*0.4, bob:0.6+Math.random(), ph:Math.random()*6.28, x, z, s};
+  scene.add(m);
+  // soft halo
+  const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:sunTex,color:new THREE.Color(hex),blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.5}));
+  halo.scale.set(s*7,s*7,1); halo.position.copy(m.position); scene.add(halo);
+  m.userData.halo=halo;
+  crystals.push(m);
+});
+
+/* ============================================================
+   Drifting creatures — undulating mantas with a wave vertex shader
+   ============================================================ */
+const mantaUniforms = [];
+function makeManta(hex){
+  const g=new THREE.PlaneGeometry(46, 30, 30, 18);
+  g.rotateX(-Math.PI/2);
+  const u={
+    uTime:{value:0},
+    uColA:{value:new THREE.Color(hex)},
+    uColB:{value:new THREE.Color('#0b0820')},
+    uGlow:{value:new THREE.Color('#f0abfc')},
+  };
+  mantaUniforms.push(u);
+  const m=new THREE.ShaderMaterial({
+    uniforms:u, transparent:true, side:THREE.DoubleSide, depthWrite:false,
+    blending:THREE.NormalBlending,
+    vertexShader:`
+      uniform float uTime; varying vec2 vUv; varying float vWing;
+      void main(){
+        vUv=uv;
+        vec3 p=position;
+        float wing=abs(p.x)/23.0;
+        // flap wings + body undulation
+        p.y += sin(uTime*2.2 - wing*3.1) * wing*wing*9.0;
+        p.y += sin(uTime*1.4 + p.z*0.25)*1.4;
+        p.z += cos(uTime*1.1 + wing*2.0)*1.2;
+        vWing=wing;
+        gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);
+      }`,
+    fragmentShader:`
+      uniform vec3 uColA,uColB,uGlow; varying vec2 vUv; varying float vWing;
+      void main(){
+        // diamond body mask
+        float body=smoothstep(0.5,0.46,abs(vUv.x-0.5)+abs(vUv.y-0.5));
+        float core=smoothstep(0.34,0.0,abs(vUv.x-0.5)+abs(vUv.y-0.5));
+        vec3 c=mix(uColB,uColA,core);
+        c+=uGlow*pow(vWing,2.5)*0.6;        // glowing wingtips
+        float a=body*(0.55+core*0.45);
+        if(a<0.02) discard;
+        gl_FragColor=vec4(c,a);
+      }`
+  });
+  return new THREE.Mesh(g,m);
+}
+const mantas=[];
+[['#a78bfa',{x:-160,y:150,z:-500,sp:0.55,r:240,ph:0}],
+ ['#fbbf24',{x:140,y:200,z:-820,sp:0.4,r:300,ph:2.1}],
+ ['#f0abfc',{x:-60,y:120,z:-1140,sp:0.5,r:200,ph:4.0}],
+ ['#8b5cf6',{x:80,y:260,z:-1450,sp:0.32,r:340,ph:1.0}]].forEach(([hex,cfg])=>{
+  const m=makeManta(hex); m.userData=cfg; m.position.set(cfg.x,cfg.y,cfg.z); scene.add(m); mantas.push(m);
+});
+
+/* ============================================================
+   Floating motes + drifting spores (the world feels alive)
+   ============================================================ */
+function makeParticles(count, spread, size, color, opacity){
+  const g=new THREE.BufferGeometry();
+  const arr=new Float32Array(count*3);
+  for(let i=0;i<count;i++){
+    arr[i*3]   = (Math.random()-0.5)*spread;
+    arr[i*3+1] = Math.random()*420 + 10;
+    arr[i*3+2] = -Math.random()*1700 + 200;
+  }
+  g.setAttribute('position', new THREE.BufferAttribute(arr,3));
+  const m=new THREE.PointsMaterial({size, color, transparent:true, opacity, depthWrite:false,
+    blending:THREE.AdditiveBlending, map:radialTex([[0,'rgba(255,255,255,1)'],[1,'rgba(255,255,255,0)']]), sizeAttenuation:true});
+  const pts=new THREE.Points(g,m); pts.userData.base=arr.slice(); scene.add(pts); return pts;
+}
+const motes  = makeParticles(isMobile?500:1100, 1400, 4.5, '#ffe7b0', 0.9);
+const spores = makeParticles(isMobile?260:600, 1100, 2.4, '#c4b5fd', 0.7);
+
+/* ---------- Distant cloud bands (sprites) ---------- */
+const cloudTex = radialTex([[0,'rgba(230,210,255,0.5)'],[0.5,'rgba(180,150,240,0.18)'],[1,'rgba(180,150,240,0)']]);
+const clouds=[];
+for(let i=0;i<14;i++){
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:cloudTex,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.5}));
+  const sc=260+Math.random()*420;
+  s.scale.set(sc*1.7,sc,1);
+  s.position.set((Math.random()-0.5)*1600, 180+Math.random()*220, -200-Math.random()*1500);
+  s.userData.drift=0.2+Math.random()*0.5;
+  scene.add(s); clouds.push(s);
+}
+
+/* ============================================================
+   The portal — destination at the end of the journey
+   ============================================================ */
+const portalGroup=new THREE.Group();
+portalGroup.position.set(0, 150, -1620);
+const ringGeo=new THREE.TorusGeometry(80, 5, 24, 120);
+const ringMat=new THREE.MeshStandardMaterial({color:'#fbbf24',emissive:'#f59e0b',emissiveIntensity:2.2,metalness:0.4,roughness:0.2});
+const ring=new THREE.Mesh(ringGeo,ringMat); portalGroup.add(ring);
+const innerMat=new THREE.MeshBasicMaterial({map:radialTex([[0,'rgba(255,247,224,0.95)'],[0.4,'rgba(245,158,11,0.5)'],[0.75,'rgba(139,92,246,0.4)'],[1,'rgba(139,92,246,0)']]),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide});
+const inner=new THREE.Mesh(new THREE.CircleGeometry(78,64), innerMat); portalGroup.add(inner);
+const pHalo=new THREE.Sprite(new THREE.SpriteMaterial({map:sunTex,color:new THREE.Color('#fbbf24'),blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.8}));
+pHalo.scale.set(620,620,1); portalGroup.add(pHalo);
+scene.add(portalGroup);
+
+/* ============================================================
+   Camera flight path (CatmullRom spline)
+   ============================================================ */
+const path = new THREE.CatmullRomCurve3([
+  new THREE.Vector3(   0, 240,  340),  // high in the clouds
+  new THREE.Vector3(  60, 170,  120),
+  new THREE.Vector3( -50, 120, -140),  // descending over the first ridge
+  new THREE.Vector3(  40,  78, -420),  // into the valley
+  new THREE.Vector3( -40,  64, -720),
+  new THREE.Vector3(  50,  88, -1020), // past the vaults
+  new THREE.Vector3( -30, 110, -1320),
+  new THREE.Vector3(   0, 140, -1520),  // approaching the portal
+], false, 'catmullrom', 0.4);
+
+const look = new THREE.CatmullRomCurve3([
+  new THREE.Vector3(   0, 120,  120),
+  new THREE.Vector3(  20,  90, -160),
+  new THREE.Vector3( -10,  70, -460),
+  new THREE.Vector3(  10,  60, -760),
+  new THREE.Vector3(  -5,  72, -1060),
+  new THREE.Vector3(   5,  95, -1360),
+  new THREE.Vector3(   0, 140, -1600),
+  new THREE.Vector3(   0, 150, -1620),
+], false, 'catmullrom', 0.4);
+
+/* ============================================================
+   Post-processing — UnrealBloom for the dreamlike glow
+   ============================================================ */
+let composer=null, bloom=null;
+if(!isMobile){
+  composer=new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene,camera));
+  bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight), 0.9, 0.7, 0.62);
+  composer.addPass(bloom);
+}
+
+/* ============================================================
+   Scroll progress (Lenis smooth scroll if available)
+   ============================================================ */
+let targetP=0, curP=0;
+const scrollHint=document.getElementById('scrollHint');
+
+function rawProgress(){
+  const max=document.documentElement.scrollHeight-innerHeight;
+  return max>0 ? THREE.MathUtils.clamp(scrollY/max,0,1) : 0;
+}
+
+let lenis=null;
+function initLenis(){
+  if(prefersReduced || isMobile || typeof window.Lenis==='undefined') return;
+  lenis=new window.Lenis({lerp:0.08, smoothWheel:true});
+  function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+}
+
+/* ---------- Chapter overlay control ---------- */
+const chapters=[...document.querySelectorAll('.chapter')];
+const ticks=[...document.querySelectorAll('.rail .tick')];
+// each chapter occupies a window of scroll progress
+const windows=[[0.0,0.16],[0.17,0.34],[0.37,0.55],[0.58,0.74],[0.80,1.0]];
+function smoothstep(a,b,x){ x=THREE.MathUtils.clamp((x-a)/(b-a),0,1); return x*x*(3-2*x); }
+function updateChapters(p){
+  let active=0;
+  windows.forEach((w,i)=>{
+    const [a,b]=w; const mid=(a+b)/2; const half=(b-a)/2;
+    // fade in over first 35%, hold, fade out over last 30%
+    let op;
+    if(i===windows.length-1){ op=smoothstep(a, a+0.08, p); }      // CTA stays visible
+    else { const fin=smoothstep(a, a+(b-a)*0.34, p); const fout=1-smoothstep(b-(b-a)*0.34, b, p); op=Math.min(fin,fout); }
+    const el=chapters[i];
+    el.style.opacity=op.toFixed(3);
+    el.style.transform=`translateY(${(1-op)*22}px)`;
+    // overlays never trap pointer events; only .cta-actions (auto) is clickable
+    if(p>=a-0.02 && p<=b+0.02) active=i;
+  });
+  ticks.forEach((t,i)=>t.classList.toggle('on', i===active));
+  scrollHint.style.opacity = p>0.04 ? '0':'0.9';
+}
+
+/* ============================================================
+   Animate
+   ============================================================ */
+const clock=new THREE.Clock();
+const mouse=new THREE.Vector2(0,0), mouseT=new THREE.Vector2(0,0);
+if(!isMobile && !prefersReduced){
+  addEventListener('pointermove',e=>{ mouseT.set((e.clientX/innerWidth-0.5), (e.clientY/innerHeight-0.5)); });
+}
+
+const _camPos=new THREE.Vector3(), _look=new THREE.Vector3();
+function frame(){
+  const dt=Math.min(clock.getDelta(),0.05);
+  const t=clock.elapsedTime;
+
+  targetP=rawProgress();
+  // smooth the camera progress for a cinematic glide
+  curP += (targetP-curP) * (prefersReduced?1: 0.06);
+
+  // ---- camera along the spline ----
+  const tp = THREE.MathUtils.clamp(curP,0,1);
+  path.getPointAt(tp,_camPos);
+  look.getPointAt(tp,_look);
+  mouse.lerp(mouseT, 0.05);
+  // gentle parallax + breathing bob
+  _camPos.x += mouse.x*30;
+  _camPos.y += -mouse.y*16 + Math.sin(t*0.6)*1.6;
+  camera.position.copy(_camPos);
+  camera.lookAt(_look.x + mouse.x*20, _look.y + Math.sin(t*0.4)*1.2, _look.z);
+
+  // ---- sun + sky follow tone of journey ----
+  const expo = 0.9 + Math.sin(tp*Math.PI)*0.25;
+  renderer.toneMappingExposure = expo;
+
+  // ---- crystals bob + spin ----
+  crystals.forEach(c=>{
+    const u=c.userData;
+    c.rotation.y += u.spin*dt;
+    c.rotation.x += u.spin*0.4*dt;
+    const y=u.baseY + Math.sin(t*u.bob+u.ph)*6;
+    c.position.y=y;
+    if(u.halo){ u.halo.position.y=y; const pulse=0.4+Math.sin(t*1.6+u.ph)*0.18; u.halo.material.opacity=pulse; }
+  });
+
+  // ---- mantas glide along arcs ----
+  mantas.forEach(m=>{
+    const u=m.userData;
+    u.ph += dt*u.sp*0.3;
+    const x=u.x + Math.cos(u.ph)*u.r;
+    const z=u.z + Math.sin(u.ph)*u.r*0.4;
+    const nx=u.x + Math.cos(u.ph+0.05)*u.r;
+    const nz=u.z + Math.sin(u.ph+0.05)*u.r*0.4;
+    m.position.set(x, u.y + Math.sin(t*0.5+u.ph)*10, z);
+    m.lookAt(nx, m.position.y, nz);
+  });
+  mantaUniforms.forEach(u=>u.uTime.value=t);
+
+  // ---- portal pulse ----
+  ring.rotation.z += dt*0.25;
+  inner.material.opacity = 0.7 + Math.sin(t*1.5)*0.18;
+  const ps=1+Math.sin(t*1.2)*0.04; pHalo.scale.set(620*ps,620*ps,1);
+  inner.lookAt(camera.position);
+
+  // ---- particles drift ----
+  [motes,spores].forEach((p,k)=>{
+    const arr=p.geometry.attributes.position.array; const base=p.userData.base;
+    for(let i=1;i<arr.length;i+=3){
+      arr[i] = base[i] + Math.sin(t*0.4 + base[i-1]*0.01 + k)* (k?6:10);
+      arr[i+1] = base[i+1] + Math.cos(t*0.3 + base[i-1]*0.008)*8;
+    }
+    p.geometry.attributes.position.needsUpdate=true;
+    p.rotation.y = t*0.005*(k?-1:1);
+  });
+
+  // ---- clouds drift sideways ----
+  clouds.forEach(c=>{ c.position.x += c.userData.drift*dt*4; if(c.position.x>900)c.position.x=-900; });
+
+  // sun shimmer
+  sunSprite.material.rotation = Math.sin(t*0.1)*0.1;
+
+  updateChapters(targetP);
+
+  if(composer) composer.render(); else renderer.render(scene,camera);
+  requestAnimationFrame(frame);
+}
+
+/* ============================================================
+   Resize
+   ============================================================ */
+addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+  if(composer) composer.setSize(innerWidth,innerHeight);
+});
+
+/* ============================================================
+   Controls: skip + reduce motion
+   ============================================================ */
+document.getElementById('skipBtn').addEventListener('click',()=>{
+  const max=document.documentElement.scrollHeight-innerHeight;
+  if(lenis) lenis.scrollTo(max,{duration:2.2}); else window.scrollTo({top:max,behavior:'smooth'});
+});
+
+const motionBtn=document.getElementById('motionBtn');
+const motionLabel=document.getElementById('motionLabel');
+let staticMode=false;
+function setStatic(on){
+  staticMode=on;
+  document.body.classList.toggle('static-mode',on);
+  motionBtn.setAttribute('aria-pressed', String(on));
+  motionLabel.textContent = on ? 'Resume motion' : 'Reduce motion';
+  if(on){ // park the camera at a beautiful vantage and reveal all chapters
+    curP=0.12; targetP=0.12;
+    chapters.forEach(c=>{c.style.opacity='1';c.style.transform='none';c.style.pointerEvents='auto';});
+  }
+}
+motionBtn.addEventListener('click',()=>setStatic(!staticMode));
+
+/* ============================================================
+   Boot
+   ============================================================ */
+let prog=0;
+const bootMsgs=['Summoning the realm…','Raising the mountains…','Seeding the vaults…','Waking the creatures…','Opening the portal…'];
+const bootTimer=setInterval(()=>{
+  prog=Math.min(prog+ (8+Math.random()*16), 100);
+  loaderBar.style.width=prog+'%';
+  loaderSub.textContent=bootMsgs[Math.min(Math.floor(prog/22),bootMsgs.length-1)];
+  if(prog>=100){
+    clearInterval(bootTimer);
+    setTimeout(()=>{ loader.classList.add('gone'); }, 350);
+  }
+},180);
+
+initLenis();
+if(prefersReduced){ setStatic(true); }
+// render one frame immediately so there's no black flash behind the loader
+renderer.render(scene,camera);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
