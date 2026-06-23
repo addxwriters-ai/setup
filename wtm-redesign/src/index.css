@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-industrial text-stark font-sans antialiased;
+  }
+  /* Round 1: structural skeleton only — no scroll smoothing yet */
+}
+
+@layer components {
+  /* Concrete-thin hairline rule used across the structural grid */
+  .rule-x {
+    @apply border-t border-hairline;
+  }
+  .rule-y {
+    @apply border-l border-hairline;
+  }
+  /* Uppercase stark display heading */
+  .display {
+    @apply font-black uppercase tracking-tightest leading-[0.92];
+  }
+  .eyebrow {
+    @apply text-xs uppercase tracking-[0.28em] text-concrete font-semibold;
+  }
+}
