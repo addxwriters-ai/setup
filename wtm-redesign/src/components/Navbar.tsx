@@ -1,6 +1,7 @@
-const links = ['Products', 'Projects', 'Capabilities', 'Contact']
+import { useContent } from '../content/ContentContext'
 
 export default function Navbar() {
+  const { nav } = useContent()
   return (
     <header className="sticky top-0 z-50 border-b border-hairline bg-industrial/90 backdrop-blur-sm">
       <div className="mx-auto flex max-w-frame items-center justify-between px-6 py-5 md:px-12">
@@ -9,7 +10,7 @@ export default function Navbar() {
         </a>
 
         <nav aria-label="Primary" className="hidden items-center gap-10 md:flex">
-          {links.map((l) => (
+          {nav.links.map((l) => (
             <a
               key={l}
               href={`#${l.toLowerCase()}`}
@@ -21,7 +22,7 @@ export default function Navbar() {
         </nav>
 
         <a href="#contact" className="btn-industrial px-5 py-2.5">
-          Enquire
+          {nav.cta}
         </a>
       </div>
     </header>

@@ -3,12 +3,13 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import VideoFrame from './VideoFrame'
-import { products } from '../data/products'
+import { useContent } from '../content/ContentContext'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function ProductArchitecture() {
   const section = useRef<HTMLElement>(null)
+  const { products } = useContent()
 
   useGSAP(() => {
     const mm = gsap.matchMedia()
@@ -73,21 +74,20 @@ export default function ProductArchitecture() {
       <div className="mx-auto max-w-frame px-6 py-16 md:px-12 md:py-24">
         <div className="pa-heading mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <div className="eyebrow mb-5">Product Architecture</div>
+            <div className="eyebrow mb-5">{products.eyebrow}</div>
             <h2 className="display text-4xl sm:text-5xl xl:text-6xl">
-              Six Structural
+              {products.headingLine1}
               <br />
-              Categories.
+              {products.headingLine2}
             </h2>
           </div>
           <p className="max-w-sm text-sm leading-relaxed text-stark">
-            A vertically integrated portfolio engineered for enterprise
-            infrastructure — from technical surfaces to strategic metallurgy.
+            {products.intro}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-px border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((p) => (
+          {products.items.map((p) => (
             <a
               key={p.index}
               href={p.href}

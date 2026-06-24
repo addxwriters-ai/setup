@@ -1,0 +1,124 @@
+{
+  "nav": {
+    "links": ["Products", "Projects", "Capabilities", "Contact"],
+    "cta": "Enquire"
+  },
+  "hero": {
+    "eyebrow": "WTM Industrial Group",
+    "headlineLine1": "Industrial",
+    "headlineLine2": "Redefined.",
+    "subcopy": "Premium building materials, engineered stones, and structural mineral solutions for large-scale enterprise infrastructure.",
+    "ctaPrimary": "Explore Capabilities",
+    "ctaTag": "Est. Enterprise B2B",
+    "videoLabel": "HERO · CINEMATIC LOOP"
+  },
+  "products": {
+    "eyebrow": "Product Architecture",
+    "headingLine1": "Six Structural",
+    "headingLine2": "Categories.",
+    "intro": "A vertically integrated portfolio engineered for enterprise infrastructure — from technical surfaces to strategic metallurgy.",
+    "items": [
+      {
+        "index": "01",
+        "title": "Floor & Wall Tiles",
+        "context": "Large-format porcelain, slip-resistant technical surfaces.",
+        "href": "",
+        "video": "/assets/products/tiles.mp4"
+      },
+      {
+        "index": "02",
+        "title": "Sanitary Ware",
+        "context": "Precision-engineered commercial and residential fixtures.",
+        "href": "",
+        "video": "/assets/products/sanitary.mp4"
+      },
+      {
+        "index": "03",
+        "title": "Engineered Stone",
+        "context": "High-density, acid-resistant sintered stone slabs.",
+        "href": "",
+        "video": "/assets/products/engineered-stone.mp4"
+      },
+      {
+        "index": "04",
+        "title": "Industrial Floor & Wall System",
+        "context": "Heavy-duty utility coatings and structural containment.",
+        "href": "",
+        "video": "/assets/products/industrial-systems.mp4"
+      },
+      {
+        "index": "05",
+        "title": "Natural Stones",
+        "context": "Premium architectural marble, granite, and structural facades.",
+        "href": "",
+        "video": "/assets/products/natural-stones.mp4"
+      },
+      {
+        "index": "06",
+        "title": "Ores & Minerals",
+        "context": "Strategic industrial metal sourcing, antimony, and metallurgy supply chains.",
+        "href": "",
+        "video": "/assets/products/ores-minerals.mp4"
+      }
+    ]
+  },
+  "projects": {
+    "eyebrow": "Completed Projects",
+    "heading": "Operational Scale.",
+    "items": [
+      {
+        "index": "01",
+        "name": "National Petrochemical Plant",
+        "scale": "320,000 m² · Acid-Resistant Sintered Stone & Utility Floor Coatings",
+        "location": "Karachi Industrial Zone, Sindh",
+        "media": "/assets/projects/petrochemical-plant.mp4"
+      },
+      {
+        "index": "02",
+        "name": "International Airport Terminal",
+        "scale": "185,000 m² · Large-Format Porcelain Tile & High-Traffic Safety Systems",
+        "location": "Islamabad, ICT",
+        "media": "/assets/projects/airport-terminal.mp4"
+      },
+      {
+        "index": "03",
+        "name": "Commercial Dairy & Food Processing Facility",
+        "scale": "72,000 m² · Alkali-Resistant Sanitary Ware & Slip-Resistant Floors",
+        "location": "Lahore, Punjab",
+        "media": "/assets/projects/dairy-facility.mp4"
+      },
+      {
+        "index": "04",
+        "name": "Regional Pharmaceutical Laboratory",
+        "scale": "48,000 m² · Chemical-Resistant Surfaces & Clean-Room Natural Stone",
+        "location": "Multan, Punjab",
+        "media": "/assets/projects/pharma-lab.mp4"
+      }
+    ]
+  },
+  "clients": {
+    "eyebrow": "Client Infrastructure Portal",
+    "heading": "Trusted Across Enterprise.",
+    "intro": "Supplying structural and mineral solutions to industrial operators and infrastructure contractors.",
+    "partners": [
+      "CPEC Authority",
+      "NLC Pakistan",
+      "Frontier Works Org.",
+      "DHA Holdings",
+      "Nespak",
+      "Descon Engineering",
+      "Lucky Cement",
+      "Habib Rafiq",
+      "Bahria Town",
+      "CSCEC Pakistan"
+    ]
+  },
+  "footer": {
+    "headingTop": "Build at",
+    "headingAccent": "Scale.",
+    "copy": "Enterprise procurement, structural specification, and supply-chain enquiries for large-scale infrastructure programs.",
+    "email": "enquiries@wtm.com.pk",
+    "legal": "WTM Industrial Group",
+    "domain": "wtm.com.pk"
+  }
+}

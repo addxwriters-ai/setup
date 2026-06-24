@@ -3,13 +3,14 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import VideoFrame from './VideoFrame'
-import { projects } from '../data/projects'
+import { useContent } from '../content/ContentContext'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function CompletedProjects() {
   const section = useRef<HTMLElement>(null)
-  const count = projects.length
+  const { projects } = useContent()
+  const count = projects.items.length
 
   useGSAP(() => {
     const mm = gsap.matchMedia()
@@ -79,15 +80,15 @@ export default function CompletedProjects() {
     <section ref={section} id="projects" className="border-b-[3px] border-maroon bg-midnight">
       <div className="mx-auto max-w-frame px-6 py-16 md:px-12 md:py-24">
         <div className="mb-12">
-          <div className="eyebrow mb-5">Completed Projects</div>
+          <div className="eyebrow mb-5">{projects.eyebrow}</div>
           <h2 className="display text-4xl sm:text-5xl xl:text-6xl">
-            Operational Scale.
+            {projects.heading}
           </h2>
         </div>
 
         {/* Stacked panels — on lg+ they are absolutely positioned and crossfaded */}
         <div className="relative lg:min-h-[520px]">
-          {projects.map((p) => (
+          {projects.items.map((p) => (
             <article
               key={p.index}
               className="proj-panel border-b border-hairline last:border-b-0 lg:absolute lg:inset-0 lg:border-b-0"
@@ -130,7 +131,7 @@ export default function CompletedProjects() {
 
         {/* Scroll progress dots (desktop only) */}
         <div className="mt-8 hidden items-center justify-center gap-3 lg:flex" aria-hidden="true">
-          {projects.map((p) => (
+          {projects.items.map((p) => (
             <span key={p.index} className="h-1.5 w-1.5 rounded-full bg-concrete/30" />
           ))}
         </div>
