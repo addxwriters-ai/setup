@@ -21,14 +21,51 @@
   .rule-y {
     @apply border-l border-hairline;
   }
+
+  /* Stark uppercase display heading — tight architectural tracking,
+     dropped leading for an integrated, heavy structural presence */
   .display {
-    @apply font-black uppercase tracking-tightest leading-[0.92];
+    @apply font-black uppercase tracking-tightest leading-[1.1];
   }
   .eyebrow {
     @apply text-xs uppercase tracking-[0.28em] text-concrete font-semibold;
   }
 
-  /* Hero text mask reveal — clip region animated by GSAP */
+  /* Muted body copy: 70% white, resolves to solid white on hover/in-view */
+  .body-muted {
+    @apply text-stark/70 transition-colors duration-500;
+  }
+  .body-muted:hover,
+  .body-muted.is-active {
+    @apply text-stark;
+  }
+
+  /* Industrial button — sharp 90° corners, 1px concrete border, hidden
+     maroon mask that fills on hover; near-imperceptible 1% lift */
+  .btn-industrial {
+    @apply relative inline-flex items-center justify-center overflow-hidden
+           border border-concrete px-7 py-4 text-xs font-bold uppercase
+           tracking-[0.18em] text-stark transition-transform duration-300
+           ease-out;
+  }
+  .btn-industrial::before {
+    content: '';
+    @apply absolute inset-0 -z-10 bg-maroon;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .btn-industrial:hover {
+    @apply scale-[1.01] border-maroon text-stark;
+  }
+  .btn-industrial:hover::before {
+    transform: scaleY(1);
+  }
+  .btn-industrial:focus-visible {
+    @apply outline-none ring-2 ring-maroon ring-offset-2 ring-offset-industrial;
+  }
+
+  /* Hero text mask reveal */
   .line-mask {
     overflow: hidden;
     display: block;
@@ -46,7 +83,7 @@
     right: 0;
     bottom: 0;
     height: 2px;
-    background: #5A1818;
+    background: #5a1818;
     transform: scaleX(0);
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     z-index: 30;
@@ -70,5 +107,8 @@
   }
   .marquee-track {
     animation: none !important;
+  }
+  .btn-industrial:hover {
+    transform: none !important;
   }
 }

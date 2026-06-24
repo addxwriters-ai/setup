@@ -18,8 +18,15 @@ export default function App() {
     ScrollTrigger.normalizeScroll(true)
     ScrollTrigger.config({ ignoreMobileResize: true })
 
+    // Muted paragraphs resolve from 70% → solid white once scrolled past.
+    const batch = ScrollTrigger.batch('.body-muted', {
+      start: 'top 75%',
+      onEnter: (els) => els.forEach((el) => el.classList.add('is-active')),
+    })
+
     return () => {
       ScrollTrigger.normalizeScroll(false)
+      batch.forEach((st) => st.kill())
     }
   }, [])
 

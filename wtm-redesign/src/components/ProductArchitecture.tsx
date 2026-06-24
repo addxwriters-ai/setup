@@ -11,8 +11,10 @@ export default function ProductArchitecture() {
   const section = useRef<HTMLElement>(null)
 
   useGSAP(() => {
-    const ctx = gsap.context(() => {
-      // --- section heading reveal ---
+    const mm = gsap.matchMedia()
+
+    // Lightweight reveals run on all viewports (no pin, no scrub).
+    mm.add('all', () => {
       gsap.from('.pa-heading', {
         opacity: 0,
         y: 50,
@@ -25,12 +27,7 @@ export default function ProductArchitecture() {
         },
       })
 
-      // --- per-card: staggered entrance + parallax video shift ---
-      const cards = gsap.utils.toArray<HTMLElement>('.product-card')
-      cards.forEach((card, i) => {
-        const video = card.querySelector('.pv-frame')
-
-        // staggered card entrance
+      gsap.utils.toArray<HTMLElement>('.product-card').forEach((card, i) => {
         gsap.from(card, {
           opacity: 0,
           y: 60,
@@ -43,33 +40,37 @@ export default function ProductArchitecture() {
             toggleActions: 'play none none none',
           },
         })
-
-        // parallax: video bg shifts vertically relative to scroll
-        if (video) {
-          gsap.fromTo(
-            video,
-            { yPercent: -8 },
-            {
-              yPercent: 8,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: card,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 1,
-              },
-            }
-          )
-        }
       })
-    }, section)
+    })
 
-    return () => ctx.revert()
+    // Complex parallax scrub: desktop only (≥1024px) to avoid mobile stutter.
+    mm.add('(min-width: 1024px)', () => {
+      gsap.utils.toArray<HTMLElement>('.product-card').forEach((card) => {
+        const video = card.querySelector('.pv-frame')
+        if (!video) return
+        gsap.fromTo(
+          video,
+          { yPercent: -8 },
+          {
+            yPercent: 8,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1,
+            },
+          }
+        )
+      })
+    })
+
+    return () => mm.revert()
   }, { scope: section })
 
   return (
     <section ref={section} id="products" className="border-b border-hairline">
-      <div className="mx-auto max-w-frame px-6 py-16 md:px-10 md:py-24">
+      <div className="mx-auto max-w-frame px-6 py-16 md:px-12 md:py-24">
         <div className="pa-heading mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <div className="eyebrow mb-5">Product Architecture</div>
@@ -79,7 +80,7 @@ export default function ProductArchitecture() {
               Categories.
             </h2>
           </div>
-          <p className="max-w-sm text-sm leading-relaxed text-concrete">
+          <p className="body-muted max-w-sm text-sm leading-relaxed">
             A vertically integrated portfolio engineered for enterprise
             infrastructure — from technical surfaces to strategic metallurgy.
           </p>
@@ -92,8 +93,9 @@ export default function ProductArchitecture() {
               href={p.href}
               className="product-card group relative block aspect-[4/5] overflow-hidden bg-industrial"
             >
-              {/* absolute video layer — parallax target */}
-              <div className="pv-frame absolute inset-[-16%] h-[132%] w-full">
+              {/* absolute video layer — parallax target (over-sized
+                  vertically so the scrub shift never reveals edges) */}
+              <div className="pv-frame absolute left-0 right-0 -top-[16%] h-[132%]">
                 <VideoFrame
                   src={p.video}
                   label={`PRODUCT ${p.index}`}

@@ -57,7 +57,7 @@ export default function ClientInfrastructure() {
 
   return (
     <section ref={section} id="capabilities" className="border-b border-hairline">
-      <div className="mx-auto max-w-frame px-6 py-16 md:px-10 md:py-20">
+      <div className="mx-auto max-w-frame px-6 py-16 md:px-12 md:py-20">
         <div className="ci-heading mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
             <div className="eyebrow mb-5">Client Infrastructure Portal</div>

@@ -63,14 +63,14 @@ export default function Hero() {
     <section ref={section} className="border-b border-hairline">
       <div className="mx-auto grid max-w-frame grid-cols-1 lg:grid-cols-5">
         {/* Left panel — 40% structural block */}
-        <div className="flex flex-col justify-between border-hairline px-6 py-12 md:px-10 lg:col-span-2 lg:border-r lg:py-20">
+        <div className="flex flex-col justify-between border-hairline px-6 py-12 md:px-12 lg:col-span-2 lg:border-r lg:py-20">
           <div className="eyebrow mb-10 flex items-center gap-4">
             <span className="hero-rule h-px w-10 bg-maroon" />
             WTM Industrial Group
           </div>
 
           <div>
-            <h1 className="display text-6xl sm:text-7xl xl:text-8xl">
+            <h1 className="display text-4xl sm:text-6xl lg:text-7xl xl:text-8xl">
               <span className="line-mask">
                 <span className="hero-line">Industrial</span>
               </span>
@@ -78,17 +78,14 @@ export default function Hero() {
                 <span className="hero-line text-concrete">Redefined.</span>
               </span>
             </h1>
-            <p className="hero-fade mt-8 max-w-md text-base leading-relaxed text-concrete md:text-lg">
+            <p className="hero-fade body-muted mt-8 max-w-md text-base leading-relaxed md:text-lg">
               Premium building materials, engineered stones, and structural
               mineral solutions for large-scale enterprise infrastructure.
             </p>
           </div>
 
-          <div className="hero-fade mt-12 flex items-center gap-4">
-            <a
-              href="#products"
-              className="bg-stark px-7 py-4 text-xs font-bold uppercase tracking-[0.18em] text-industrial transition-colors duration-200 hover:bg-maroon hover:text-stark"
-            >
+          <div className="hero-fade mt-12 flex flex-wrap items-center gap-4">
+            <a href="#products" className="btn-industrial">
               Explore Capabilities
             </a>
             <span className="text-xs uppercase tracking-[0.2em] text-concrete/60">

@@ -77,7 +77,7 @@ export default function CompletedProjects() {
 
   return (
     <section ref={section} id="projects" className="border-b border-hairline bg-midnight">
-      <div className="mx-auto max-w-frame px-6 py-16 md:px-10 md:py-24">
+      <div className="mx-auto max-w-frame px-6 py-16 md:px-12 md:py-24">
         <div className="mb-12">
           <div className="eyebrow mb-5">Completed Projects</div>
           <h2 className="display text-4xl sm:text-5xl xl:text-6xl">
