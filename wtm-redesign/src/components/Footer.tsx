@@ -11,7 +11,7 @@ export default function Footer() {
             </h2>
           </div>
           <div className="flex flex-col justify-end gap-6">
-            <p className="body-muted max-w-sm text-sm leading-relaxed">
+            <p className="max-w-sm text-sm leading-relaxed text-stark">
               Enterprise procurement, structural specification, and supply-chain
               enquiries for large-scale infrastructure programs.
             </p>
@@ -21,7 +21,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col justify-between gap-4 border-t border-hairline pt-8 text-xs uppercase tracking-[0.18em] text-concrete/60 md:flex-row">
+        <div className="mt-16 flex flex-col justify-between gap-4 border-t-[2px] border-maroon pt-8 text-xs uppercase tracking-[0.18em] text-stark/60 md:flex-row">
           <span>© {new Date().getFullYear()} WTM Industrial Group</span>
           <span>wtm.com.pk</span>
         </div>

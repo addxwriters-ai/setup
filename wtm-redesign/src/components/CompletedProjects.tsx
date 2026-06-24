@@ -76,7 +76,7 @@ export default function CompletedProjects() {
   }, { scope: section })
 
   return (
-    <section ref={section} id="projects" className="border-b border-hairline bg-midnight">
+    <section ref={section} id="projects" className="border-b-[3px] border-maroon bg-midnight">
       <div className="mx-auto max-w-frame px-6 py-16 md:px-12 md:py-24">
         <div className="mb-12">
           <div className="eyebrow mb-5">Completed Projects</div>

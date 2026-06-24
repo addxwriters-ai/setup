@@ -69,7 +69,7 @@ export default function ProductArchitecture() {
   }, { scope: section })
 
   return (
-    <section ref={section} id="products" className="border-b border-hairline">
+    <section ref={section} id="products" className="border-b-[3px] border-maroon">
       <div className="mx-auto max-w-frame px-6 py-16 md:px-12 md:py-24">
         <div className="pa-heading mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
@@ -80,7 +80,7 @@ export default function ProductArchitecture() {
               Categories.
             </h2>
           </div>
-          <p className="body-muted max-w-sm text-sm leading-relaxed">
+          <p className="max-w-sm text-sm leading-relaxed text-stark">
             A vertically integrated portfolio engineered for enterprise
             infrastructure — from technical surfaces to strategic metallurgy.
           </p>

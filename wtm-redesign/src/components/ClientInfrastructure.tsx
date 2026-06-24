@@ -56,7 +56,7 @@ export default function ClientInfrastructure() {
   }, { scope: section })
 
   return (
-    <section ref={section} id="capabilities" className="border-b border-hairline">
+    <section ref={section} id="capabilities" className="border-b-[3px] border-maroon">
       <div className="mx-auto max-w-frame px-6 py-16 md:px-12 md:py-20">
         <div className="ci-heading mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
@@ -65,7 +65,7 @@ export default function ClientInfrastructure() {
               Trusted Across Enterprise.
             </h2>
           </div>
-          <p className="max-w-xs text-sm leading-relaxed text-concrete">
+          <p className="max-w-xs text-sm leading-relaxed text-stark">
             Supplying structural and mineral solutions to industrial operators
             and infrastructure contractors.
           </p>
@@ -73,7 +73,7 @@ export default function ClientInfrastructure() {
       </div>
 
       {/* Marquee belt — full-bleed, overflows container */}
-      <div className="overflow-hidden border-y border-hairline py-8">
+      <div className="overflow-hidden border-y-[2px] border-maroon py-8">
         <div className="marquee-track">
           {/* two copies for seamless loop */}
           {[0, 1].map((copy) => (

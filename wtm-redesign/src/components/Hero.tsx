@@ -60,12 +60,12 @@ export default function Hero() {
   }, { scope: section })
 
   return (
-    <section ref={section} className="border-b border-hairline">
+    <section ref={section} className="border-b-[3px] border-maroon">
       <div className="mx-auto grid max-w-frame grid-cols-1 lg:grid-cols-5">
         {/* Left panel — 40% structural block */}
-        <div className="flex flex-col justify-between border-hairline px-6 py-12 md:px-12 lg:col-span-2 lg:border-r lg:py-20">
+        <div className="flex flex-col justify-between bg-maroon px-6 py-12 md:px-12 lg:col-span-2 lg:border-r lg:border-maroon/40 lg:py-20">
           <div className="eyebrow mb-10 flex items-center gap-4">
-            <span className="hero-rule h-px w-10 bg-maroon" />
+            <span className="hero-rule h-px w-10 bg-stark/50" />
             WTM Industrial Group
           </div>
 
@@ -75,10 +75,10 @@ export default function Hero() {
                 <span className="hero-line">Industrial</span>
               </span>
               <span className="line-mask">
-                <span className="hero-line text-concrete">Redefined.</span>
+                <span className="hero-line text-stark/80">Redefined.</span>
               </span>
             </h1>
-            <p className="hero-fade body-muted mt-8 max-w-md text-base leading-relaxed md:text-lg">
+            <p className="hero-fade mt-8 max-w-md text-base leading-relaxed text-stark md:text-lg">
               Premium building materials, engineered stones, and structural
               mineral solutions for large-scale enterprise infrastructure.
             </p>
@@ -88,7 +88,7 @@ export default function Hero() {
             <a href="#products" className="btn-industrial">
               Explore Capabilities
             </a>
-            <span className="text-xs uppercase tracking-[0.2em] text-concrete/60">
+            <span className="text-xs uppercase tracking-[0.2em] text-stark/60">
               Est. Enterprise B2B
             </span>
           </div>
