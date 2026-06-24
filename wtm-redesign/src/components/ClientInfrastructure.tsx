@@ -1,11 +1,64 @@
-// Clean placeholder grid for enterprise B2B partner logos.
-const SLOTS = 10
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const PARTNERS = [
+  'CPEC Authority',
+  'NLC Pakistan',
+  'Frontier Works Org.',
+  'DHA Holdings',
+  'Nespak',
+  'Descon Engineering',
+  'Lucky Cement',
+  'Habib Rafiq',
+  'Bahria Town',
+  'CSCEC Pakistan',
+]
 
 export default function ClientInfrastructure() {
+  const section = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const ctx = gsap.context(() => {
+      // heading reveal
+      gsap.from('.ci-heading', {
+        opacity: 0,
+        y: 40,
+        duration: 0.9,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.ci-heading',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      })
+
+      // infinite horizontal marquee — completely linear, never hitches
+      const track = document.querySelector('.marquee-track') as HTMLElement
+      if (track) {
+        const w = track.scrollWidth / 2
+        gsap.to(track, {
+          x: -w,
+          duration: 40,
+          ease: 'none',
+          repeat: -1,
+          modifiers: {
+            x: gsap.utils.unitize((x: number) => x % w),
+          },
+        })
+      }
+    }, section)
+
+    return () => ctx.revert()
+  }, { scope: section })
+
   return (
-    <section id="capabilities" className="border-b border-hairline">
+    <section ref={section} id="capabilities" className="border-b border-hairline">
       <div className="mx-auto max-w-frame px-6 py-16 md:px-10 md:py-20">
-        <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div className="ci-heading mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
             <div className="eyebrow mb-5">Client Infrastructure Portal</div>
             <h2 className="display text-3xl sm:text-4xl">
@@ -17,16 +70,24 @@ export default function ClientInfrastructure() {
             and infrastructure contractors.
           </p>
         </div>
+      </div>
 
-        <div className="grid grid-cols-2 gap-px border border-hairline bg-hairline sm:grid-cols-3 lg:grid-cols-5">
-          {Array.from({ length: SLOTS }).map((_, i) => (
-            <div
-              key={i}
-              className="flex aspect-[3/2] items-center justify-center bg-industrial"
-            >
-              <span className="text-[0.6rem] uppercase tracking-[0.3em] text-concrete/40">
-                Partner {String(i + 1).padStart(2, '0')}
-              </span>
+      {/* Marquee belt — full-bleed, overflows container */}
+      <div className="overflow-hidden border-y border-hairline py-8">
+        <div className="marquee-track">
+          {/* two copies for seamless loop */}
+          {[0, 1].map((copy) => (
+            <div key={copy} className="flex shrink-0">
+              {PARTNERS.map((name, i) => (
+                <div
+                  key={`${copy}-${i}`}
+                  className="flex h-16 items-center justify-center border-r border-hairline px-12 md:h-20 md:px-16"
+                >
+                  <span className="whitespace-nowrap text-sm font-semibold uppercase tracking-[0.18em] text-concrete/50">
+                    {name}
+                  </span>
+                </div>
+              ))}
             </div>
           ))}
         </div>

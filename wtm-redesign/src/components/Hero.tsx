@@ -1,30 +1,90 @@
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import VideoFrame from './VideoFrame'
 
-// Full-bleed asymmetric grid: 40% structural copy block / 60% containment video.
+gsap.registerPlugin(ScrollTrigger)
+
 export default function Hero() {
+  const section = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const ctx = gsap.context(() => {
+      // --- text mask reveal: each .line-mask > span slides up ---
+      gsap.to('.hero-line', {
+        y: 0,
+        duration: 1.4,
+        ease: 'power3.out',
+        stagger: 0.18,
+        delay: 0.3,
+      })
+
+      // --- sub-copy + CTA fade in ---
+      gsap.from('.hero-fade', {
+        opacity: 0,
+        y: 30,
+        duration: 1.2,
+        ease: 'power2.out',
+        stagger: 0.15,
+        delay: 0.9,
+      })
+
+      // --- video frame: scale 95% → 100% on scroll scrub ---
+      gsap.fromTo(
+        '.hero-video',
+        { scale: 0.95 },
+        {
+          scale: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        }
+      )
+
+      // --- eyebrow line wipe ---
+      gsap.from('.hero-rule', {
+        scaleX: 0,
+        transformOrigin: 'left center',
+        duration: 1.2,
+        ease: 'power3.inOut',
+        delay: 0.2,
+      })
+    }, section)
+
+    return () => ctx.revert()
+  }, { scope: section })
+
   return (
-    <section className="border-b border-hairline">
+    <section ref={section} className="border-b border-hairline">
       <div className="mx-auto grid max-w-frame grid-cols-1 lg:grid-cols-5">
-        {/* Left panel — 40% (2/5) fixed structural block */}
+        {/* Left panel — 40% structural block */}
         <div className="flex flex-col justify-between border-hairline px-6 py-12 md:px-10 lg:col-span-2 lg:border-r lg:py-20">
           <div className="eyebrow mb-10 flex items-center gap-4">
-            <span className="h-px w-10 bg-maroon" />
+            <span className="hero-rule h-px w-10 bg-maroon" />
             WTM Industrial Group
           </div>
 
           <div>
             <h1 className="display text-6xl sm:text-7xl xl:text-8xl">
-              Industrial
-              <br />
-              <span className="text-concrete">Redefined.</span>
+              <span className="line-mask">
+                <span className="hero-line">Industrial</span>
+              </span>
+              <span className="line-mask">
+                <span className="hero-line text-concrete">Redefined.</span>
+              </span>
             </h1>
-            <p className="mt-8 max-w-md text-base leading-relaxed text-concrete md:text-lg">
+            <p className="hero-fade mt-8 max-w-md text-base leading-relaxed text-concrete md:text-lg">
               Premium building materials, engineered stones, and structural
               mineral solutions for large-scale enterprise infrastructure.
             </p>
           </div>
 
-          <div className="mt-12 flex items-center gap-4">
+          <div className="hero-fade mt-12 flex items-center gap-4">
             <a
               href="#products"
               className="bg-stark px-7 py-4 text-xs font-bold uppercase tracking-[0.18em] text-industrial transition-colors duration-200 hover:bg-maroon hover:text-stark"
@@ -37,8 +97,8 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right panel — 60% (3/5) massive containment video frame */}
-        <div className="relative lg:col-span-3">
+        {/* Right panel — 60% containment video, scrub-scales to full bleed */}
+        <div className="hero-video relative origin-center lg:col-span-3">
           <VideoFrame
             src="/assets/hero-industrial.mp4"
             label="HERO · CINEMATIC LOOP"

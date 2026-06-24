@@ -6,26 +6,69 @@
   html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    scroll-behavior: auto;
   }
   body {
     @apply bg-industrial text-stark font-sans antialiased;
+    overscroll-behavior: none;
   }
-  /* Round 1: structural skeleton only — no scroll smoothing yet */
 }
 
 @layer components {
-  /* Concrete-thin hairline rule used across the structural grid */
   .rule-x {
     @apply border-t border-hairline;
   }
   .rule-y {
     @apply border-l border-hairline;
   }
-  /* Uppercase stark display heading */
   .display {
     @apply font-black uppercase tracking-tightest leading-[0.92];
   }
   .eyebrow {
     @apply text-xs uppercase tracking-[0.28em] text-concrete font-semibold;
+  }
+
+  /* Hero text mask reveal — clip region animated by GSAP */
+  .line-mask {
+    overflow: hidden;
+    display: block;
+  }
+  .line-mask > span {
+    display: inline-block;
+    transform: translateY(110%);
+    will-change: transform;
+  }
+
+  /* Product card hover accent line — center-outward scale */
+  .accent-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: #5A1818;
+    transform: scaleX(0);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 30;
+  }
+  .group:hover .accent-line {
+    transform: scaleX(1);
+  }
+
+  /* Marquee */
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+}
+
+/* prefers-reduced-motion: kill all GSAP-driven transforms */
+@media (prefers-reduced-motion: reduce) {
+  .line-mask > span {
+    transform: none !important;
+  }
+  .marquee-track {
+    animation: none !important;
   }
 }

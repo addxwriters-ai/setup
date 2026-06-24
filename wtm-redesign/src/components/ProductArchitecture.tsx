@@ -1,13 +1,76 @@
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import VideoFrame from './VideoFrame'
 import { products } from '../data/products'
 
-// Heavy structural cards. Each is fully clickable (anchor-wrapped) with an
-// absolute-positioned video placeholder behind a minimalist text overlay.
+gsap.registerPlugin(ScrollTrigger)
+
 export default function ProductArchitecture() {
+  const section = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const ctx = gsap.context(() => {
+      // --- section heading reveal ---
+      gsap.from('.pa-heading', {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.pa-heading',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      })
+
+      // --- per-card: staggered entrance + parallax video shift ---
+      const cards = gsap.utils.toArray<HTMLElement>('.product-card')
+      cards.forEach((card, i) => {
+        const video = card.querySelector('.pv-frame')
+
+        // staggered card entrance
+        gsap.from(card, {
+          opacity: 0,
+          y: 60,
+          duration: 0.9,
+          ease: 'power2.out',
+          delay: i * 0.08,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 88%',
+            toggleActions: 'play none none none',
+          },
+        })
+
+        // parallax: video bg shifts vertically relative to scroll
+        if (video) {
+          gsap.fromTo(
+            video,
+            { yPercent: -8 },
+            {
+              yPercent: 8,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1,
+              },
+            }
+          )
+        }
+      })
+    }, section)
+
+    return () => ctx.revert()
+  }, { scope: section })
+
   return (
-    <section id="products" className="border-b border-hairline">
+    <section ref={section} id="products" className="border-b border-hairline">
       <div className="mx-auto max-w-frame px-6 py-16 md:px-10 md:py-24">
-        <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div className="pa-heading mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <div className="eyebrow mb-5">Product Architecture</div>
             <h2 className="display text-4xl sm:text-5xl xl:text-6xl">
@@ -27,30 +90,31 @@ export default function ProductArchitecture() {
             <a
               key={p.index}
               href={p.href}
-              className="group relative block aspect-[4/5] overflow-hidden bg-industrial"
+              className="product-card group relative block aspect-[4/5] overflow-hidden bg-industrial"
             >
-              {/* absolute video layer */}
-              <VideoFrame
-                src={p.video}
-                label={`PRODUCT ${p.index}`}
-                className="absolute inset-0 h-full w-full"
-              />
+              {/* absolute video layer — parallax target */}
+              <div className="pv-frame absolute inset-[-16%] h-[132%] w-full">
+                <VideoFrame
+                  src={p.video}
+                  label={`PRODUCT ${p.index}`}
+                  className="h-full w-full"
+                />
+              </div>
 
-              {/* minimalist text overlay */}
+              {/* minimalist text overlay — shifts right 8px on hover */}
               <div className="relative z-10 flex h-full flex-col justify-between bg-gradient-to-t from-midnight/85 via-industrial/20 to-transparent p-6">
                 <div className="flex items-start justify-between">
                   <span className="text-xs font-bold tracking-[0.2em] text-concrete">
                     {p.index}
                   </span>
                   <span className="text-concrete transition-colors duration-200 group-hover:text-maroon">
-                    {/* arrow indicator */}
                     <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
                       <path d="M7 17 17 7M9 7h8v8" />
                     </svg>
                   </span>
                 </div>
 
-                <div>
+                <div className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-2">
                   <h3 className="display text-2xl leading-none sm:text-3xl">
                     {p.title}
                   </h3>
@@ -60,8 +124,14 @@ export default function ProductArchitecture() {
                 </div>
               </div>
 
+              {/* hover: video opacity 0.4 → 0.8 */}
+              <div className="pointer-events-none absolute inset-0 z-[5] bg-midnight/60 transition-opacity duration-500 group-hover:opacity-20" />
+
               {/* maroon accent border on hover */}
               <span className="pointer-events-none absolute inset-0 z-20 border border-transparent transition-colors duration-200 group-hover:border-maroon" />
+
+              {/* center-outward maroon accent line */}
+              <span className="accent-line" />
             </a>
           ))}
         </div>
