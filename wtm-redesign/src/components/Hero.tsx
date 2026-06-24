@@ -65,7 +65,7 @@ export default function Hero() {
     <section ref={section} className="border-b-[3px] border-maroon">
       <div className="mx-auto grid max-w-frame grid-cols-1 lg:grid-cols-5">
         {/* Left panel — 40% structural block */}
-        <div className="flex flex-col justify-between bg-maroon px-6 py-12 md:px-12 lg:col-span-2 lg:border-r lg:border-maroon/40 lg:py-20">
+        <div className="flex flex-col justify-between bg-maroon px-6 py-12 md:px-12 lg:col-span-2 lg:justify-center lg:gap-12 lg:border-r lg:border-maroon/40 lg:px-16 lg:py-20">
           <div className="eyebrow mb-10 flex items-center gap-4">
             <span className="hero-rule h-px w-10 bg-stark/50" />
             {hero.eyebrow}

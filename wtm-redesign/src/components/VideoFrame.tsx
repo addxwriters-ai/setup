@@ -4,23 +4,35 @@ interface VideoFrameProps {
   className?: string
 }
 
-// Isolated, performant video wrapper. Round 1 = placeholder frame only:
-// metadata-only preload, muted/loop/inline so upcoming Higgsfield loops
-// drop in without re-architecting the layout.
+// Shared media frame. Renders an <img> or a <video> based on the file
+// extension in `src`, so content.json can mix JPEGs and MP4s freely.
+// Both tags share identical fill styling so the container looks the same
+// regardless of media type.
+const FILL = 'absolute inset-0 h-full w-full object-cover opacity-60'
+
+function isImage(src: string) {
+  return /\.(jpg|jpeg|png|webp|gif|avif)(\?.*)?$/i.test(src)
+}
+
 export default function VideoFrame({ src, label = 'VIDEO', className = '' }: VideoFrameProps) {
   return (
     <div className={`relative overflow-hidden bg-midnight ${className}`}>
-      <video
-        className="absolute inset-0 h-full w-full object-cover opacity-60"
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        aria-hidden="true"
-      >
-        <source src={src} type="video/mp4" />
-      </video>
-      {/* Structural placeholder marker (removed once real loops land) */}
+      {isImage(src) ? (
+        <img src={src} alt="" className={FILL} loading="lazy" aria-hidden="true" />
+      ) : (
+        <video
+          className={FILL}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        >
+          <source src={src} type={src.toLowerCase().endsWith('.webm') ? 'video/webm' : 'video/mp4'} />
+        </video>
+      )}
+      {/* Structural placeholder marker (removed once real media lands) */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <span className="text-[0.62rem] tracking-[0.4em] text-concrete/40">{label}</span>
       </div>
