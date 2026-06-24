@@ -63,29 +63,27 @@ export default function Hero() {
 
   return (
     <section ref={section} className="border-b-[3px] border-maroon">
-      <div className="mx-auto grid max-w-frame grid-cols-1 lg:grid-cols-5">
-        {/* Left panel — 40% structural block */}
-        <div className="flex flex-col justify-between bg-maroon px-6 py-12 md:px-12 lg:col-span-2 lg:justify-center lg:gap-12 lg:border-r lg:border-maroon/40 lg:px-16 lg:py-20">
-          <div className="eyebrow mb-10 flex items-center gap-4">
+      <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-12">
+        {/* Left panel — strict vertical center via flex on a grid child */}
+        <div className="lg:col-span-5 flex flex-col justify-center items-start px-6 py-12 lg:px-16 h-full bg-[#5A1818]">
+          <div className="eyebrow mb-6 flex items-center gap-4">
             <span className="hero-rule h-px w-10 bg-stark/50" />
             {hero.eyebrow}
           </div>
 
-          <div>
-            <h1 className="display text-4xl sm:text-6xl lg:text-7xl xl:text-8xl">
-              <span className="line-mask">
-                <span className="hero-line">{hero.headlineLine1}</span>
-              </span>
-              <span className="line-mask">
-                <span className="hero-line text-stark/80">{hero.headlineLine2}</span>
-              </span>
-            </h1>
-            <p className="hero-fade mt-8 max-w-md text-base leading-relaxed text-stark md:text-lg">
-              {hero.subcopy}
-            </p>
-          </div>
+          <h1 className="display text-4xl sm:text-6xl lg:text-7xl xl:text-8xl">
+            <span className="line-mask">
+              <span className="hero-line">{hero.headlineLine1}</span>
+            </span>
+            <span className="line-mask">
+              <span className="hero-line text-stark/80">{hero.headlineLine2}</span>
+            </span>
+          </h1>
+          <p className="hero-fade mt-6 max-w-md text-base leading-relaxed text-stark md:text-lg">
+            {hero.subcopy}
+          </p>
 
-          <div className="hero-fade mt-12 flex flex-wrap items-center gap-4">
+          <div className="hero-fade mt-8 flex flex-wrap items-center gap-4">
             <a href="#products" className="btn-industrial">
               {hero.ctaPrimary}
             </a>
@@ -95,12 +93,12 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right panel — 60% containment video, scrub-scales to full bleed */}
-        <div className="hero-video relative origin-center lg:col-span-3">
+        {/* Right panel — video fills remaining 7 cols */}
+        <div className="hero-video lg:col-span-7 relative h-full min-h-[50vh] lg:min-h-screen origin-center">
           <VideoFrame
             src="/assets/hero-industrial.mp4"
             label={hero.videoLabel}
-            className="aspect-[16/11] h-full w-full lg:aspect-auto lg:min-h-[640px]"
+            className="absolute inset-0 h-full w-full"
           />
         </div>
       </div>
