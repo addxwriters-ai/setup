@@ -129,6 +129,18 @@ export default function Packages() {
           scrollTrigger: { trigger: ".summary-bar", start: "top 90%" },
         }
       );
+      gsap.fromTo(
+        ".enterprise-card",
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power4.out",
+          immediateRender: false,
+          scrollTrigger: { trigger: ".enterprise-card", start: "top 90%" },
+        }
+      );
       ScrollTrigger.refresh();
     }, ref);
     return () => ctx.revert();
@@ -290,6 +302,67 @@ export default function Packages() {
           >
             Book this build
           </a>
+        </div>
+
+        {/* ---- Custom / Enterprise tier ---- */}
+        <div className="enterprise-card mt-10 relative overflow-hidden rounded-[16px] border border-white/10 bg-panel p-9 shadow-[0_0_120px_-40px_rgba(79,196,248,0.18)]">
+          {/* Subtle radial glow */}
+          <div
+            className="pointer-events-none absolute -top-24 right-0 h-72 w-72 rounded-full opacity-20"
+            style={{ background: "radial-gradient(circle, rgba(46,126,247,0.6) 0%, transparent 70%)" }}
+            aria-hidden
+          />
+
+          <div className="relative flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+            <div className="flex-1">
+              <span className="mb-4 inline-block font-mono text-[10px] uppercase tracking-[0.3em] text-muted/60">
+                Custom &amp; Enterprise
+              </span>
+              <h3 className="font-display text-[clamp(1.6rem,3.5vw,2.6rem)] font-semibold leading-[1.08] tracking-tightest">
+                Need something<br />
+                <em className="serif-accent">beyond the build</em>?
+              </h3>
+              <p className="mt-4 max-w-lg text-sm leading-relaxed text-muted md:text-base">
+                Full-scale design systems, multi-language platforms, e-commerce, app interfaces,
+                bespoke motion direction, or an ongoing retainer — we scope it together.
+                No fixed menu; no ceiling.
+              </p>
+
+              <ul className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
+                {[
+                  "Design system architecture",
+                  "Multi-page / multi-language",
+                  "E-commerce & web apps",
+                  "Ongoing retainer",
+                  "White-label delivery",
+                ].map((f) => (
+                  <li key={f} className="flex items-center gap-2 text-xs text-ink/70">
+                    <span className="text-accent" aria-hidden>▸</span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="shrink-0 flex flex-col items-start gap-4 md:items-end">
+              <div className="text-right">
+                <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted">Starting from</p>
+                <p className="mt-1 font-display text-4xl font-bold tracking-tightest text-ink">
+                  Custom
+                </p>
+                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
+                  Scoped per project
+                </p>
+              </div>
+              <a
+                href="https://addxstudio.com/contact"
+                className="group flex items-center gap-3 rounded-[10px] border border-white/15 bg-white/5 px-7 py-4 font-display text-sm font-semibold text-white transition-all duration-300 hover:border-accent/50 hover:bg-accent/10 hover:shadow-[0_0_40px_-15px_rgba(79,196,248,0.5)]"
+              >
+                Book a Meeting
+                <span className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden>→</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
