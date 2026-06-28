@@ -3,7 +3,9 @@ name: Deploy Lux Black to GitHub Pages
 # Builds the static export in lux-black/ and publishes it to GitHub Pages.
 on:
   push:
-    branches: [claude/happy-pasteur-6dhrbv]
+    branches:
+      - claude/happy-pasteur-6dhrbv
+      - claude/affectionate-babbage-7gt0nm # default branch — required to pass Pages environment gate
     paths:
       - "lux-black/**"
       - ".github/workflows/deploy-lux-black.yml"
