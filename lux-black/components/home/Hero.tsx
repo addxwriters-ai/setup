@@ -1,18 +1,16 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
-import { HeroMedia } from "./HeroMedia";
 import { Magnetic } from "@/components/motion/Magnetic";
 import { ctaPrimary, ctaSecondary } from "@/components/ui/cta";
 import { BRAND } from "@/lib/content";
 
 /**
- * Home hero. Round 2: cinematic video backdrop with scroll parallax (HeroMedia)
- * sits behind the static typographic composition from Round 1.
+ * Home hero — transparent, full-height text layer that sits over the anchored
+ * video backdrop provided by <HeroStage>. Typography unchanged from Round 1.
  */
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden border-b border-hairline">
-      <HeroMedia />
+    <section className="relative flex min-h-screen items-center border-b border-hairline">
       <Container className="relative z-10 py-28 lg:py-40">
         <p className="font-sans text-xs uppercase tracking-[0.32em] text-steel">
           {BRAND.established} · Private Chauffeur Collective

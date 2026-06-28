@@ -11,7 +11,7 @@ import { SERVICES } from "@/lib/content";
  */
 export function ServicesPreview() {
   return (
-    <section className="border-b border-hairline">
+    <section className="border-b border-hairline bg-obsidian">
       <Container className="py-28">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>

@@ -6,7 +6,7 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
  */
 export function ExperienceStatement() {
   return (
-    <section className="border-b border-hairline">
+    <section className="border-b border-hairline bg-obsidian">
       <Container className="py-32">
         <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
           <SectionLabel index="03">The Standard</SectionLabel>
