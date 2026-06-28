@@ -46,9 +46,7 @@ export function HeroMedia() {
         muted
         playsInline
         preload="auto"
-        poster={`${BASE}/media/hero-poster.jpg`}
       >
-        <source src={`${BASE}/media/hero-loop.webm`} type="video/webm" />
         <source src={`${BASE}/media/hero-loop.mp4`} type="video/mp4" />
       </motion.video>
 
