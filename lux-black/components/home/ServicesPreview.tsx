@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { Stagger, StaggerItem } from "@/components/motion/reveal";
 import { SERVICES } from "@/lib/content";
 
 /**
- * Home → services preview. Static editorial list, no hover/reveal.
+ * Home → services preview. Round 2: rows stagger-fade upward on viewport entry.
  */
 export function ServicesPreview() {
   return (
@@ -25,9 +26,13 @@ export function ServicesPreview() {
           </Link>
         </div>
 
-        <ul className="mt-16 grid gap-px border-t border-hairline sm:grid-cols-2">
+        <Stagger
+          as="ul"
+          className="mt-16 grid gap-px border-t border-hairline sm:grid-cols-2"
+        >
           {SERVICES.map((service) => (
-            <li
+            <StaggerItem
+              as="li"
               key={service.slug}
               className="border-b border-hairline py-10 sm:px-2"
             >
@@ -42,9 +47,9 @@ export function ServicesPreview() {
               <p className="mt-4 max-w-md font-sans text-sm leading-relaxed text-ash">
                 {service.summary}
               </p>
-            </li>
+            </StaggerItem>
           ))}
-        </ul>
+        </Stagger>
       </Container>
     </section>
   );

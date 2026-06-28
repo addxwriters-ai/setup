@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
+import { HeroMedia } from "./HeroMedia";
 import { BRAND } from "@/lib/content";
 
 /**
- * Home hero. Round 1: typographic hierarchy + grid composition only.
- * No parallax, no entrance animation — those arrive in a later round.
+ * Home hero. Round 2: cinematic video backdrop with scroll parallax (HeroMedia)
+ * sits behind the static typographic composition from Round 1.
  */
 export function Hero() {
   return (
-    <section className="border-b border-hairline">
-      <Container className="py-28 lg:py-40">
+    <section className="relative isolate overflow-hidden border-b border-hairline">
+      <HeroMedia />
+      <Container className="relative z-10 py-28 lg:py-40">
         <p className="font-sans text-xs uppercase tracking-[0.32em] text-steel">
           {BRAND.established} · Private Chauffeur Collective
         </p>

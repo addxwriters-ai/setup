@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { Stagger, StaggerItem } from "@/components/motion/reveal";
 import { FLEET } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -21,9 +22,10 @@ export default function FleetPage() {
 
       <section>
         <Container className="py-20">
-          <ul className="grid gap-px">
+          <Stagger as="ul" className="grid gap-px">
             {FLEET.map((vehicle, i) => (
-              <li
+              <StaggerItem
+                as="li"
                 key={vehicle.slug}
                 className="border-b border-hairline py-16 first:pt-0"
               >
@@ -61,9 +63,9 @@ export default function FleetPage() {
                     </dl>
                   </div>
                 </div>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         </Container>
       </section>
     </>
