@@ -31,12 +31,24 @@ export const CONTACT = {
   email: "concierge@theluxblack.com", // verify
   address: {
     line1: "356 Wayne Street",
-    line2: "",
+    // No suite number was present in the extracted data. Em-dash is an
+    // editorial placeholder — replace with the real suite before publishing.
+    suite: "Suite —",
     city: "Jersey City",
     region: "NJ",
     postal: "07302",
   },
   hours: "Reservations · 24 hours, 7 days",
+} as const;
+
+// Compliance / corporate registration block for the footer.
+// NONE of these identifiers were present in the extracted data — they are
+// structural placeholders pending official details from the business.
+export const COMPLIANCE = {
+  entity: "The Lux Black LLC", // verify legal entity name
+  registration: "Reg. No. —", // pending: state filing / entity number
+  jurisdiction: "Registered in New Jersey, USA", // verify
+  taxId: "EIN —", // pending
 } as const;
 
 export type Vehicle = {
@@ -88,13 +100,27 @@ export type Service = {
   details: string[];
 };
 
+// Offering names per the Phase 4 brief (elevated framing of the live site's
+// service lines: Corporate / Airport / Chauffeur / Hourly).
 export const SERVICES: Service[] = [
   {
-    slug: "airport",
+    slug: "ma-corporate",
     index: "01",
+    title: "M&A Season Corporate Transport",
+    summary:
+      "Dedicated fleet and standby chauffeurs for deal teams through earnings and M&A season — discreet, billable, and on call around the clock.",
+    details: [
+      "Dedicated deal-team accounts",
+      "Standby & multi-stop coverage",
+      "Consolidated corporate billing",
+    ],
+  },
+  {
+    slug: "airport-transfers",
+    index: "02",
     title: "Airport Transfers",
     summary:
-      "Flight-tracked arrivals and departures with meet-and-greet at the gate.",
+      "Flight-tracked arrivals and departures across EWR, JFK, LGA and TEB, with meet-and-greet at the terminal.",
     details: [
       "Real-time flight monitoring",
       "Complimentary wait time",
@@ -102,27 +128,15 @@ export const SERVICES: Service[] = [
     ],
   },
   {
-    slug: "corporate",
-    index: "02",
-    title: "Corporate Travel",
-    summary:
-      "Discreet, punctual transport for executives, boards, and visiting clients.",
-    details: [
-      "Dedicated account management",
-      "Multi-stop itineraries",
-      "Consolidated billing",
-    ],
-  },
-  {
-    slug: "events",
+    slug: "chauffeur-protocols",
     index: "03",
-    title: "Events & Galas",
+    title: "Executive Chauffeur Protocols",
     summary:
-      "Red-carpet arrivals and coordinated logistics for the evening that matters.",
+      "Vetted, trained chauffeurs operating to a fixed standard of privacy, punctuality, and presentation on every assignment.",
     details: [
-      "Synchronized arrival timing",
-      "On-call standby service",
-      "Group coordination",
+      "NDA-bound chauffeurs",
+      "Fixed service protocol",
+      "Privacy guaranteed",
     ],
   },
   {
@@ -130,11 +144,11 @@ export const SERVICES: Service[] = [
     index: "04",
     title: "Hourly & As-Directed",
     summary:
-      "A chauffeur and vehicle at your disposal, for the hour or for the day.",
+      "A chauffeur and vehicle at your disposal, for the hour or for the day, anywhere across the tri-state area.",
     details: [
       "Flexible itinerary",
-      "City-wide coverage",
-      "Privacy guaranteed",
+      "Region-wide coverage",
+      "Business or leisure",
     ],
   },
 ];

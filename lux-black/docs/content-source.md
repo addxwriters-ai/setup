@@ -100,6 +100,12 @@ These need a human pass on the live site (bot-blocked from automation):
 3. Email address and any contact-form fields.
 4. Testimonials (one indexed: a wedding client noting it was "a fancy affair without breaking the bank").
 5. Pricing / quote logic and coverage-area list.
+6. **Corporate suite number** — not in extracted data; rendered as an em-dash placeholder in the footer/contact (`CONTACT.address.suite`).
+7. **Business registration / compliance details** — entity name, registration number, tax ID, jurisdiction. All placeholders in `COMPLIANCE`; supply official values before publishing.
+
+> Service offering names on the Services section use the Phase 4 brief's
+> elevated framing (M&A Season Corporate Transport / Executive Chauffeur
+> Protocols), not the live site's literal labels (Corporate / Chauffeur).
 
 **Sources:**
 [Home](https://www.theluxblack.com/) ·
