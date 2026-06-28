@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { Stagger, StaggerItem } from "@/components/motion/reveal";
 import { FLEET } from "@/lib/content";
 
 /**
- * Home → fleet preview. Static card grid; imagery + motion land later.
+ * Home → fleet preview. Round 2: cards stagger-fade upward on viewport entry.
  */
 export function FleetPreview() {
   return (
@@ -25,9 +26,13 @@ export function FleetPreview() {
           </Link>
         </div>
 
-        <ul className="mt-16 grid gap-px sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger
+          as="ul"
+          className="mt-16 grid gap-px sm:grid-cols-2 lg:grid-cols-3"
+        >
           {FLEET.map((vehicle) => (
-            <li
+            <StaggerItem
+              as="li"
               key={vehicle.slug}
               className="border border-hairline bg-onyx p-8"
             >
@@ -41,9 +46,9 @@ export function FleetPreview() {
               <p className="mt-4 font-sans text-xs tracking-[0.12em] text-ash">
                 {vehicle.seats} seats · {vehicle.luggage} bags
               </p>
-            </li>
+            </StaggerItem>
           ))}
-        </ul>
+        </Stagger>
       </Container>
     </section>
   );

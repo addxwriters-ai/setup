@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { Stagger, StaggerItem } from "@/components/motion/reveal";
 import { SERVICES } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -21,9 +22,10 @@ export default function ServicesPage() {
 
       <section>
         <Container className="py-20">
-          <ul className="grid gap-px">
+          <Stagger as="ul" className="grid gap-px">
             {SERVICES.map((service) => (
-              <li
+              <StaggerItem
+                as="li"
                 key={service.slug}
                 className="border-b border-hairline py-16 first:pt-0"
               >
@@ -52,9 +54,9 @@ export default function ServicesPage() {
                     ))}
                   </ul>
                 </div>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         </Container>
       </section>
     </>
