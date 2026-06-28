@@ -140,7 +140,7 @@ export const SERVICES: Service[] = [
 ];
 
 export const STATS: { value: string; label: string }[] = [
-  { value: "11", label: "Years in service" },
+  { value: "2018", label: "Serving since" },
   { value: "24/7", label: "Concierge desk" },
   { value: "100%", label: "Vetted chauffeurs" },
   { value: "5★", label: "Standard, every ride" },
