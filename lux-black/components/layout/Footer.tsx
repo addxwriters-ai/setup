@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "./Container";
+import { linkFade } from "@/components/ui/cta";
 import { NAV, BRAND, CONTACT, COMPLIANCE } from "@/lib/content";
 
 /**
@@ -30,7 +31,10 @@ export function Footer() {
             <ul className="mt-6 space-y-3">
               {NAV.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="font-sans text-sm text-ash">
+                  <Link
+                    href={item.href}
+                    className={`font-sans text-sm text-ash ${linkFade}`}
+                  >
                     {item.label}
                   </Link>
                 </li>
@@ -55,7 +59,9 @@ export function Footer() {
             <p className="font-sans text-xs uppercase tracking-[0.32em] text-steel">
               Corporate Office
             </p>
-            <address className="mt-6 not-italic font-sans text-sm leading-relaxed text-ash">
+            <address
+              className={`mt-6 block not-italic font-sans text-sm leading-relaxed text-ash ${linkFade}`}
+            >
               {CONTACT.address.line1}
               <br />
               {CONTACT.address.suite}
@@ -73,7 +79,7 @@ export function Footer() {
               <dt className="font-sans text-[0.65rem] uppercase tracking-[0.24em] text-steel">
                 Registered Entity
               </dt>
-              <dd className="mt-2 font-sans text-xs text-ash">
+              <dd className={`mt-2 font-sans text-xs text-ash ${linkFade}`}>
                 {COMPLIANCE.entity}
               </dd>
             </div>
@@ -81,7 +87,7 @@ export function Footer() {
               <dt className="font-sans text-[0.65rem] uppercase tracking-[0.24em] text-steel">
                 Registration
               </dt>
-              <dd className="mt-2 font-sans text-xs text-ash">
+              <dd className={`mt-2 font-sans text-xs text-ash ${linkFade}`}>
                 {COMPLIANCE.registration}
               </dd>
             </div>
@@ -89,7 +95,7 @@ export function Footer() {
               <dt className="font-sans text-[0.65rem] uppercase tracking-[0.24em] text-steel">
                 Tax ID
               </dt>
-              <dd className="mt-2 font-sans text-xs text-ash">
+              <dd className={`mt-2 font-sans text-xs text-ash ${linkFade}`}>
                 {COMPLIANCE.taxId}
               </dd>
             </div>
@@ -97,7 +103,7 @@ export function Footer() {
               <dt className="font-sans text-[0.65rem] uppercase tracking-[0.24em] text-steel">
                 Jurisdiction
               </dt>
-              <dd className="mt-2 font-sans text-xs text-ash">
+              <dd className={`mt-2 font-sans text-xs text-ash ${linkFade}`}>
                 {COMPLIANCE.jurisdiction}
               </dd>
             </div>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { Magnetic } from "@/components/motion/Magnetic";
+import { ctaPrimary } from "@/components/ui/cta";
 import { CONTACT } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -68,12 +70,11 @@ export default function ContactPage() {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="justify-self-start border border-chrome px-8 py-4 font-sans text-xs uppercase tracking-[0.18em] text-ivory"
-              >
-                Request Reservation
-              </button>
+              <Magnetic className="justify-self-start" strength={0.3}>
+                <button type="submit" className={ctaPrimary}>
+                  Request Reservation
+                </button>
+              </Magnetic>
             </form>
 
             {/* Direct contact details */}

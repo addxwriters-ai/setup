@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { HeroMedia } from "./HeroMedia";
+import { Magnetic } from "@/components/motion/Magnetic";
+import { ctaPrimary, ctaSecondary } from "@/components/ui/cta";
 import { BRAND } from "@/lib/content";
 
 /**
@@ -30,18 +32,16 @@ export function Hero() {
           </p>
 
           <div className="flex flex-col gap-4 sm:flex-row lg:justify-end">
-            <Link
-              href="/contact"
-              className="border border-chrome px-7 py-4 text-center font-sans text-xs uppercase tracking-[0.18em] text-ivory"
-            >
-              Reserve a Chauffeur
-            </Link>
-            <Link
-              href="/fleet"
-              className="border border-hairline px-7 py-4 text-center font-sans text-xs uppercase tracking-[0.18em] text-ash"
-            >
-              View the Fleet
-            </Link>
+            <Magnetic strength={0.3}>
+              <Link href="/contact" className={ctaPrimary}>
+                Reserve a Chauffeur
+              </Link>
+            </Magnetic>
+            <Magnetic strength={0.2}>
+              <Link href="/fleet" className={ctaSecondary}>
+                View the Fleet
+              </Link>
+            </Magnetic>
           </div>
         </div>
       </Container>

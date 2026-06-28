@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
+import { Magnetic } from "@/components/motion/Magnetic";
+import { ctaPrimary, ctaSecondary } from "@/components/ui/cta";
 import { CONTACT } from "@/lib/content";
 
 /**
@@ -17,18 +19,19 @@ export function CtaBand() {
           desk — available at every hour.
         </p>
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Link
-            href="/contact"
-            className="border border-chrome px-8 py-4 font-sans text-xs uppercase tracking-[0.18em] text-ivory"
-          >
-            Reserve Now
-          </Link>
-          <a
-            href={`tel:${CONTACT.phone.replace(/[^+\d]/g, "")}`}
-            className="border border-hairline px-8 py-4 font-sans text-xs uppercase tracking-[0.18em] text-ash"
-          >
-            {CONTACT.phone}
-          </a>
+          <Magnetic strength={0.3}>
+            <Link href="/contact" className={ctaPrimary}>
+              Reserve Now
+            </Link>
+          </Magnetic>
+          <Magnetic strength={0.2}>
+            <a
+              href={`tel:${CONTACT.phone.replace(/[^+\d]/g, "")}`}
+              className={ctaSecondary}
+            >
+              {CONTACT.phone}
+            </a>
+          </Magnetic>
         </div>
       </Container>
     </section>
