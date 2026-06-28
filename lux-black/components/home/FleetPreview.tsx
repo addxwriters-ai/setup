@@ -2,10 +2,12 @@ import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Stagger, StaggerItem } from "@/components/motion/reveal";
+import { cardSheen, linkFade } from "@/components/ui/cta";
 import { FLEET } from "@/lib/content";
 
 /**
- * Home → fleet preview. Round 2: cards stagger-fade upward on viewport entry.
+ * Home → fleet preview. Round 2 stagger-reveal + Round 3 hover polish
+ * (subtle scale and metallic edge illumination).
  */
 export function FleetPreview() {
   return (
@@ -20,7 +22,7 @@ export function FleetPreview() {
           </div>
           <Link
             href="/fleet"
-            className="font-sans text-xs uppercase tracking-[0.18em] text-chrome"
+            className={`font-sans text-xs uppercase tracking-[0.18em] text-chrome ${linkFade}`}
           >
             Explore the Fleet →
           </Link>
@@ -34,7 +36,8 @@ export function FleetPreview() {
             <StaggerItem
               as="li"
               key={vehicle.slug}
-              className="border border-hairline bg-onyx p-8"
+              hover
+              className={`border border-hairline bg-onyx p-8 ${cardSheen}`}
             >
               <div className="aspect-[4/3] w-full border border-hairline bg-graphite" />
               <p className="mt-6 font-sans text-xs uppercase tracking-[0.18em] text-steel">

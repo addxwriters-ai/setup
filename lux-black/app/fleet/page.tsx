@@ -27,10 +27,10 @@ export default function FleetPage() {
               <StaggerItem
                 as="li"
                 key={vehicle.slug}
-                className="border-b border-hairline py-16 first:pt-0"
+                className="group border-b border-hairline py-16 first:pt-0"
               >
                 <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
-                  <div className="aspect-[16/10] w-full border border-hairline bg-graphite" />
+                  <div className="aspect-[16/10] w-full border border-hairline bg-graphite transition-[border-color,box-shadow] duration-700 ease-out group-hover:border-chrome/35 group-hover:shadow-[0_24px_70px_-30px_rgba(207,210,214,0.25)]" />
 
                   <div>
                     <p className="font-sans text-xs uppercase tracking-[0.32em] text-steel">

@@ -52,20 +52,34 @@ export function Stagger({
   );
 }
 
-/** A single staggered child. Must live inside <Stagger>. */
+/**
+ * A single staggered child. Must live inside <Stagger>.
+ *
+ * `hover` adds a very subtle scale on hover via motion's whileHover — used for
+ * the Round 3 card polish. (A Tailwind hover:scale class would be overridden by
+ * motion's inline transform, so the scale lives here.)
+ */
 export function StaggerItem({
   as = "div",
   className,
+  hover = false,
   children,
 }: {
   as?: Tag;
   className?: string;
+  hover?: boolean;
   children: ReactNode;
 }) {
   const reduce = useReducedMotion();
   const M = motion[as] as typeof motion.div;
+  const interactive = hover && !reduce;
   return (
-    <M className={className} variants={reduce ? undefined : item}>
+    <M
+      className={className}
+      variants={reduce ? undefined : item}
+      whileHover={interactive ? { scale: 1.03 } : undefined}
+      transition={interactive ? { duration: 0.5, ease: EASE } : undefined}
+    >
       {children}
     </M>
   );

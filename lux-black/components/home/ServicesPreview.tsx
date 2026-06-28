@@ -2,10 +2,12 @@ import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Stagger, StaggerItem } from "@/components/motion/reveal";
+import { cardSheen, linkFade } from "@/components/ui/cta";
 import { SERVICES } from "@/lib/content";
 
 /**
- * Home → services preview. Round 2: rows stagger-fade upward on viewport entry.
+ * Home → services preview. Round 2 stagger-reveal + Round 3 hover polish
+ * (subtle scale and metallic edge illumination).
  */
 export function ServicesPreview() {
   return (
@@ -20,7 +22,7 @@ export function ServicesPreview() {
           </div>
           <Link
             href="/services"
-            className="font-sans text-xs uppercase tracking-[0.18em] text-chrome"
+            className={`font-sans text-xs uppercase tracking-[0.18em] text-chrome ${linkFade}`}
           >
             All Services →
           </Link>
@@ -34,7 +36,8 @@ export function ServicesPreview() {
             <StaggerItem
               as="li"
               key={service.slug}
-              className="border-b border-hairline py-10 sm:px-2"
+              hover
+              className={`border border-hairline py-10 sm:px-6 ${cardSheen}`}
             >
               <div className="flex items-baseline gap-4">
                 <span className="font-sans text-xs tracking-[0.18em] text-steel">

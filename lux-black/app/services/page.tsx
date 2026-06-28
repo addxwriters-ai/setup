@@ -27,7 +27,7 @@ export default function ServicesPage() {
               <StaggerItem
                 as="li"
                 key={service.slug}
-                className="border-b border-hairline py-16 first:pt-0"
+                className="group border-b border-hairline py-16 first:pt-0"
               >
                 <div className="grid gap-10 lg:grid-cols-[0.3fr_1.4fr_1fr]">
                   <p className="font-serif text-5xl text-metallic">
@@ -43,7 +43,7 @@ export default function ServicesPage() {
                     </p>
                   </div>
 
-                  <ul className="space-y-3 border-l border-hairline pl-8">
+                  <ul className="space-y-3 border-l border-hairline pl-8 transition-colors duration-700 ease-out group-hover:border-chrome/35">
                     {service.details.map((detail) => (
                       <li
                         key={detail}

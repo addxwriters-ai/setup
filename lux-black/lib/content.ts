@@ -42,12 +42,13 @@ export const CONTACT = {
 } as const;
 
 // Compliance / corporate registration block for the footer.
-// NONE of these identifiers were present in the extracted data — they are
-// structural placeholders pending official details from the business.
+// Jurisdiction set to Wyoming per client direction (a WY-registered LLC
+// operating from the NJ office). The numeric identifiers were NOT in the
+// extracted data — still structural placeholders pending official values.
 export const COMPLIANCE = {
   entity: "The Lux Black LLC", // verify legal entity name
-  registration: "Reg. No. —", // pending: state filing / entity number
-  jurisdiction: "Registered in New Jersey, USA", // verify
+  registration: "Reg. No. —", // pending: Wyoming filing / entity number
+  jurisdiction: "Registered in Wyoming, USA",
   taxId: "EIN —", // pending
 } as const;
 
