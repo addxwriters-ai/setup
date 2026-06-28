@@ -17,7 +17,7 @@ export function FleetPreview() {
 
   return (
     <section className="border-b border-hairline bg-true-black">
-      <Container className="py-28">
+      <Container className="py-20 sm:py-24 lg:py-28">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <SectionLabel index={fleet.index}>{fleet.eyebrow}</SectionLabel>

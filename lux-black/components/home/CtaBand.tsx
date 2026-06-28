@@ -14,8 +14,8 @@ export function CtaBand() {
 
   return (
     <section className="bg-true-black">
-      <Container className="py-32 text-center">
-        <h2 className="mx-auto max-w-4xl font-serif text-5xl leading-[1.05] tracking-[-0.04em] text-ivory lg:text-7xl">
+      <Container className="py-24 text-center sm:py-28 lg:py-32">
+        <h2 className="mx-auto max-w-4xl font-serif text-4xl leading-[1.08] tracking-[-0.03em] text-ivory sm:text-5xl sm:leading-[1.05] sm:tracking-[-0.04em] lg:text-7xl">
           <Segments parts={closingCta.heading} />
         </h2>
         <p className="mx-auto mt-8 max-w-xl font-sans text-base leading-relaxed text-ash">

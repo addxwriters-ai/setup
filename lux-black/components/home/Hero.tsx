@@ -18,12 +18,12 @@ export function Hero() {
 
   return (
     <section className="relative flex min-h-screen items-center border-b border-hairline">
-      <Container className="relative z-10 py-28 lg:py-40">
-        <p className="font-sans text-xs uppercase tracking-[0.32em] text-steel">
+      <Container className="relative z-10 py-24 sm:py-28 lg:py-40">
+        <p className="font-sans text-[0.7rem] uppercase tracking-[0.28em] text-steel sm:text-xs sm:tracking-[0.32em]">
           {hero.eyebrow}
         </p>
 
-        <h1 className="mt-10 max-w-5xl font-serif text-6xl leading-[0.95] tracking-[-0.04em] text-ivory sm:text-7xl lg:text-8xl">
+        <h1 className="mt-8 max-w-5xl font-serif text-[2.75rem] leading-[1.02] tracking-[-0.03em] text-ivory sm:mt-10 sm:text-6xl sm:leading-[0.95] sm:tracking-[-0.04em] md:text-7xl lg:text-8xl">
           <TextReveal lines={hero.heading} />
         </h1>
 
