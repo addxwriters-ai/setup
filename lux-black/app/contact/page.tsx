@@ -97,8 +97,12 @@ export default function ContactPage() {
                 <address className="mt-4 not-italic font-sans text-base leading-relaxed text-ash">
                   {CONTACT.address.line1}
                   <br />
-                  {CONTACT.address.line2}
-                  <br />
+                  {CONTACT.address.line2 ? (
+                    <>
+                      {CONTACT.address.line2}
+                      <br />
+                    </>
+                  ) : null}
                   {CONTACT.address.city}, {CONTACT.address.region}{" "}
                   {CONTACT.address.postal}
                 </address>
