@@ -1,0 +1,185 @@
+{
+  "brand": {
+    "name": "The Lux Black",
+    "mark": "LUX BLACK",
+    "tagline": "Private Chauffeur, Perfected",
+    "established": "EST. 2018"
+  },
+  "nav": [
+    { "label": "Home", "href": "/" },
+    { "label": "Fleet", "href": "/fleet" },
+    { "label": "Services", "href": "/services" },
+    { "label": "Contact", "href": "/contact" }
+  ],
+  "media": {
+    "heroVideo": "/media/hero-loop.mp4"
+  },
+  "hero": {
+    "eyebrow": "EST. 2018 · Private Chauffeur Collective",
+    "heading": [
+      { "text": "The art of arriving,", "metallic": false },
+      { "text": "without a sound.", "metallic": true }
+    ],
+    "intro": "The Lux Black is a private chauffeur service for those who measure luxury in discretion. A vetted driver, an immaculate vehicle, and an itinerary that bends to you — nothing less.",
+    "primaryCta": { "label": "Reserve a Chauffeur", "href": "/contact" },
+    "secondaryCta": { "label": "View the Fleet", "href": "/fleet" }
+  },
+  "stats": [
+    { "value": "2018", "label": "Serving since" },
+    { "value": "24/7", "label": "Concierge desk" },
+    { "value": "100%", "label": "Vetted chauffeurs" },
+    { "value": "5★", "label": "Standard, every ride" }
+  ],
+  "services": {
+    "eyebrow": "Services",
+    "index": "01",
+    "heading": "Every journey, considered in advance.",
+    "previewCta": "All Services →",
+    "intro": "From the gate to the gala, our service lines are built around discretion and precision.",
+    "items": [
+      {
+        "slug": "ma-corporate",
+        "index": "01",
+        "title": "M&A Season Corporate Transport",
+        "summary": "Dedicated fleet and standby chauffeurs for deal teams through earnings and M&A season — discreet, billable, and on call around the clock.",
+        "details": [
+          "Dedicated deal-team accounts",
+          "Standby & multi-stop coverage",
+          "Consolidated corporate billing"
+        ]
+      },
+      {
+        "slug": "airport-transfers",
+        "index": "02",
+        "title": "Airport Transfers",
+        "summary": "Flight-tracked arrivals and departures across EWR, JFK, LGA and TEB, with meet-and-greet at the terminal.",
+        "details": [
+          "Real-time flight monitoring",
+          "Complimentary wait time",
+          "Curbside or terminal greeting"
+        ]
+      },
+      {
+        "slug": "chauffeur-protocols",
+        "index": "03",
+        "title": "Executive Chauffeur Protocols",
+        "summary": "Vetted, trained chauffeurs operating to a fixed standard of privacy, punctuality, and presentation on every assignment.",
+        "details": [
+          "NDA-bound chauffeurs",
+          "Fixed service protocol",
+          "Privacy guaranteed"
+        ]
+      },
+      {
+        "slug": "hourly",
+        "index": "04",
+        "title": "Hourly & As-Directed",
+        "summary": "A chauffeur and vehicle at your disposal, for the hour or for the day, anywhere across the tri-state area.",
+        "details": [
+          "Flexible itinerary",
+          "Region-wide coverage",
+          "Business or leisure"
+        ]
+      }
+    ]
+  },
+  "fleet": {
+    "eyebrow": "The Fleet",
+    "index": "02",
+    "heading": "A garage curated, not assembled.",
+    "previewCta": "Explore the Fleet →",
+    "intro": "Each vehicle is maintained to showroom condition and assigned a single, vetted chauffeur.",
+    "items": [
+      {
+        "slug": "e-class-sedan",
+        "name": "Mercedes-Benz E-Class",
+        "klass": "Executive Sedan",
+        "seats": 3,
+        "luggage": 3,
+        "blurb": "The everyday standard for the discerning traveler. A sleek, hushed cabin for airport runs and city meetings alike.",
+        "video": "/media/hero-loop.mp4"
+      },
+      {
+        "slug": "s-class-sedan",
+        "name": "Mercedes-Benz S-Class",
+        "klass": "Luxury Sedan",
+        "seats": 3,
+        "luggage": 3,
+        "blurb": "The flagship saloon. Reclining rear suite, immaculate finish, and a presence that needs no announcement.",
+        "video": "/media/hero-loop.mp4"
+      },
+      {
+        "slug": "escalade-suv",
+        "name": "Cadillac Escalade",
+        "klass": "Luxury SUV",
+        "seats": 6,
+        "luggage": 6,
+        "blurb": "Commanding stature for groups and luggage-heavy transfers. Captain seating, elevated sightlines, generous hold.",
+        "video": "/media/hero-loop.mp4"
+      }
+    ]
+  },
+  "experience": {
+    "index": "03",
+    "label": "The Standard",
+    "body": [
+      { "text": "We do not sell rides. We protect time, privacy, and composure — arriving early, waiting quietly, and disappearing the moment the door closes. ", "metallic": false },
+      { "text": "Anything less is a taxi.", "metallic": true }
+    ]
+  },
+  "closingCta": {
+    "heading": [
+      { "text": "Your car is already ", "metallic": false },
+      { "text": "waiting.", "metallic": true }
+    ],
+    "body": "Reserve a chauffeur in minutes, or speak directly with our concierge desk — available at every hour.",
+    "primary": { "label": "Reserve Now", "href": "/contact" }
+  },
+  "contact": {
+    "phone": "+1 (201) 238-3716",
+    "email": "concierge@theluxblack.com",
+    "address": {
+      "line1": "356 Wayne Street",
+      "suite": "Suite —",
+      "city": "Jersey City",
+      "region": "NJ",
+      "postal": "07302"
+    },
+    "hours": "Reservations · 24 hours, 7 days",
+    "page": {
+      "eyebrow": "Contact",
+      "index": "04",
+      "title": "Speak with the concierge.",
+      "intro": "Tell us when and where. We handle the rest."
+    },
+    "form": {
+      "name": "Full Name",
+      "email": "Email",
+      "details": "Itinerary Details",
+      "submit": "Request Reservation"
+    },
+    "labels": {
+      "concierge": "Concierge Desk",
+      "office": "Office",
+      "hours": "Hours"
+    }
+  },
+  "compliance": {
+    "entity": "The Lux Black LLC",
+    "registration": "Reg. No. —",
+    "jurisdiction": "Registered in Wyoming, USA",
+    "taxId": "EIN —"
+  },
+  "footer": {
+    "exploreLabel": "Explore",
+    "conciergeLabel": "Concierge",
+    "officeLabel": "Corporate Office",
+    "rights": "All rights reserved.",
+    "complianceLabels": {
+      "entity": "Registered Entity",
+      "registration": "Registration",
+      "taxId": "Tax ID",
+      "jurisdiction": "Jurisdiction"
+    }
+  }
+}

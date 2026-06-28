@@ -1,14 +1,18 @@
+"use client";
+
 import Link from "next/link";
 import { Container } from "./Container";
 import { Magnetic } from "@/components/motion/Magnetic";
+import { useContent } from "@/components/content/ContentProvider";
 import { linkFade } from "@/components/ui/cta";
-import { NAV, BRAND } from "@/lib/content";
 
 /**
- * Top navigation. Round 3: nav links fade on hover; the Reserve CTA is magnetic
- * with a slow obsidian→charcoal background shift.
+ * Top navigation. Nav links fade on hover; the Reserve CTA is magnetic with a
+ * slow obsidian→charcoal background shift. Copy is sourced from content.json.
  */
 export function Header() {
+  const { brand, nav } = useContent();
+
   return (
     <header className="border-b border-hairline">
       <Container className="flex h-20 items-center justify-between">
@@ -16,12 +20,12 @@ export function Header() {
           href="/"
           className="font-serif text-lg tracking-[0.18em] text-ivory"
         >
-          {BRAND.mark}
+          {brand.mark}
         </Link>
 
         <nav aria-label="Primary">
           <ul className="flex items-center gap-8">
-            {NAV.map((item) => (
+            {nav.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}

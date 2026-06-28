@@ -1,30 +1,34 @@
+"use client";
+
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Stagger, StaggerItem } from "@/components/motion/reveal";
+import { useContent } from "@/components/content/ContentProvider";
 import { cardSheen, linkFade } from "@/components/ui/cta";
-import { SERVICES } from "@/lib/content";
 
 /**
- * Home → services preview. Round 2 stagger-reveal + Round 3 hover polish
- * (subtle scale and metallic edge illumination).
+ * Home → services preview. Stagger-reveal on entry + Round 3 hover polish.
+ * Copy from content.json.
  */
 export function ServicesPreview() {
+  const { services } = useContent();
+
   return (
     <section className="border-b border-hairline bg-obsidian">
       <Container className="py-28">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <SectionLabel index="01">Services</SectionLabel>
+            <SectionLabel index={services.index}>{services.eyebrow}</SectionLabel>
             <h2 className="mt-6 max-w-2xl font-serif text-4xl tracking-[-0.02em] text-ivory lg:text-5xl">
-              Every journey, considered in advance.
+              {services.heading}
             </h2>
           </div>
           <Link
             href="/services"
             className={`font-sans text-xs uppercase tracking-[0.18em] text-chrome ${linkFade}`}
           >
-            All Services →
+            {services.previewCta}
           </Link>
         </div>
 
@@ -32,7 +36,7 @@ export function ServicesPreview() {
           as="ul"
           className="mt-16 grid gap-px border-t border-hairline sm:grid-cols-2"
         >
-          {SERVICES.map((service) => (
+          {services.items.map((service) => (
             <StaggerItem
               as="li"
               key={service.slug}
