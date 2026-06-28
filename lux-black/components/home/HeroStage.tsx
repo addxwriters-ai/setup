@@ -26,11 +26,11 @@ import {
   useSpring,
   useReducedMotion,
 } from "motion/react";
-
-const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+import { useContent, asset } from "@/components/content/ContentProvider";
 
 export function HeroStage({ children }: { children: ReactNode }) {
   const reduce = useReducedMotion();
+  const { media } = useContent();
   const ref = useRef<HTMLDivElement>(null);
 
   // Track viewport height so the parallax maps to exactly the first screen.
@@ -63,7 +63,7 @@ export function HeroStage({ children }: { children: ReactNode }) {
           playsInline
           preload="auto"
         >
-          <source src={`${BASE}/media/hero-loop.mp4`} type="video/mp4" />
+          <source src={asset(media.heroVideo)} type="video/mp4" />
         </motion.video>
 
         {/* Obsidian overlay + bottom fade for typography contrast. */}

@@ -1,14 +1,18 @@
+"use client";
+
 import Link from "next/link";
 import { Container } from "./Container";
+import { useContent } from "@/components/content/ContentProvider";
 import { linkFade } from "@/components/ui/cta";
-import { NAV, BRAND, CONTACT, COMPLIANCE } from "@/lib/content";
 
 /**
- * Contact & Compliance footer. Static layout/typography only for Round 1 —
- * no hover, transition, or motion. Four structured columns over a compliance
- * band carrying corporate registration details.
+ * Contact & Compliance footer. Static layout/typography with hover opacity
+ * fades. All copy is sourced from content.json.
  */
 export function Footer() {
+  const { brand, nav, contact, compliance, footer } = useContent();
+  const { address } = contact;
+
   return (
     <footer className="border-t border-hairline bg-true-black">
       <Container className="py-20">
@@ -16,20 +20,20 @@ export function Footer() {
           {/* Brand */}
           <div>
             <p className="font-serif text-2xl tracking-[0.12em] text-ivory">
-              {BRAND.mark}
+              {brand.mark}
             </p>
             <p className="mt-4 max-w-xs font-sans text-sm leading-relaxed text-ash">
-              {BRAND.tagline}. {BRAND.established}.
+              {brand.tagline}. {brand.established}.
             </p>
           </div>
 
           {/* Navigation */}
           <nav aria-label="Footer">
             <p className="font-sans text-xs uppercase tracking-[0.32em] text-steel">
-              Explore
+              {footer.exploreLabel}
             </p>
             <ul className="mt-6 space-y-3">
-              {NAV.map((item) => (
+              {nav.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -45,29 +49,28 @@ export function Footer() {
           {/* Concierge contact */}
           <div>
             <p className="font-sans text-xs uppercase tracking-[0.32em] text-steel">
-              Concierge
+              {footer.conciergeLabel}
             </p>
             <ul className="mt-6 space-y-3 font-sans text-sm text-ash">
-              <li>{CONTACT.phone}</li>
-              <li>{CONTACT.email}</li>
-              <li>{CONTACT.hours}</li>
+              <li>{contact.phone}</li>
+              <li>{contact.email}</li>
+              <li>{contact.hours}</li>
             </ul>
           </div>
 
           {/* Corporate office */}
           <div>
             <p className="font-sans text-xs uppercase tracking-[0.32em] text-steel">
-              Corporate Office
+              {footer.officeLabel}
             </p>
             <address
               className={`mt-6 block not-italic font-sans text-sm leading-relaxed text-ash ${linkFade}`}
             >
-              {CONTACT.address.line1}
+              {address.line1}
               <br />
-              {CONTACT.address.suite}
+              {address.suite}
               <br />
-              {CONTACT.address.city}, {CONTACT.address.region}{" "}
-              {CONTACT.address.postal}
+              {address.city}, {address.region} {address.postal}
             </address>
           </div>
         </div>
@@ -77,40 +80,40 @@ export function Footer() {
           <dl className="grid grid-cols-2 gap-x-10 gap-y-4 sm:grid-cols-4">
             <div>
               <dt className="font-sans text-[0.65rem] uppercase tracking-[0.24em] text-steel">
-                Registered Entity
+                {footer.complianceLabels.entity}
               </dt>
               <dd className={`mt-2 font-sans text-xs text-ash ${linkFade}`}>
-                {COMPLIANCE.entity}
+                {compliance.entity}
               </dd>
             </div>
             <div>
               <dt className="font-sans text-[0.65rem] uppercase tracking-[0.24em] text-steel">
-                Registration
+                {footer.complianceLabels.registration}
               </dt>
               <dd className={`mt-2 font-sans text-xs text-ash ${linkFade}`}>
-                {COMPLIANCE.registration}
+                {compliance.registration}
               </dd>
             </div>
             <div>
               <dt className="font-sans text-[0.65rem] uppercase tracking-[0.24em] text-steel">
-                Tax ID
+                {footer.complianceLabels.taxId}
               </dt>
               <dd className={`mt-2 font-sans text-xs text-ash ${linkFade}`}>
-                {COMPLIANCE.taxId}
+                {compliance.taxId}
               </dd>
             </div>
             <div>
               <dt className="font-sans text-[0.65rem] uppercase tracking-[0.24em] text-steel">
-                Jurisdiction
+                {footer.complianceLabels.jurisdiction}
               </dt>
               <dd className={`mt-2 font-sans text-xs text-ash ${linkFade}`}>
-                {COMPLIANCE.jurisdiction}
+                {compliance.jurisdiction}
               </dd>
             </div>
           </dl>
 
           <p className="font-sans text-xs uppercase tracking-[0.18em] text-smoke lg:text-right">
-            © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
+            © {new Date().getFullYear()} {brand.name}. {footer.rights}
           </p>
         </div>
       </Container>
